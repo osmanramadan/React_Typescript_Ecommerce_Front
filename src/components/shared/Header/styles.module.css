@@ -1,0 +1,7 @@
+.containerlogo{
+    color:black
+}
+.TopHeaderContainer{
+    display: flex;
+    justify-content: space-between;
+}
