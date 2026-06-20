@@ -1,6 +1,23 @@
 
 import { createRoot } from 'react-dom/client'
-import MainLayout from './layouts/MainLayout/MainLayout'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Provider } from 'react-redux';
 
-createRoot(document.getElementById('root')!).render(<MainLayout/>)
+// redux
+
+import store from './store';
+
+// styles
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./styles/global.css"
+
+import RouteApp from './routes/RouteApp';
+
+
+
+createRoot(document.getElementById('root')!).render(
+
+<Provider store={store}>
+   <RouteApp/>
+</Provider>
+
+)

@@ -1,57 +1,47 @@
-import { Badge} from "react-bootstrap"
-
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Badge } from "react-bootstrap"
+import Nav from 'react-bootstrap/Nav'
+import Navbar from 'react-bootstrap/Navbar'
+import NavDropdown from 'react-bootstrap/NavDropdown'
+import { NavLink } from "react-router-dom"
 import styles from './styles.module.css'
-import Basket from "../../ecom/Basket/Basket";
+import Basket from "../../ecommerce/Basket/Basket"
 
-const {TopHeaderContainer} = styles
+const { topHeaderContainer } = styles
 
-const Header = ()=>{
-   return (
-       <header>
+const Header = () => {
+  return (
+    <header>
+      <div className={topHeaderContainer}>
+        <h1><span>eco</span><Badge>ma</Badge></h1>
+        <Basket itemCount={2} />
+      </div>
 
-          <div className={TopHeaderContainer}>
-
-               <h1><span >eco </span><Badge>ma</Badge></h1>
-               <Basket/>
-              
-          </div>
-
-         
-          
-
-        <Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
-          <Navbar.Toggle aria-controls="basic-navbar-nav"  />
-        <Navbar.Collapse id="basic-navbar-nav" >
-            <Nav className="me-auto" >
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Store</Nav.Link>
-            <Nav.Link href="#link">About</Nav.Link>
-            <Nav.Link href="#link">Contact</Nav.Link>
+      <Navbar expand="lg" bg="dark" data-bs-theme="dark">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link as={NavLink} to="/">Home</Nav.Link>
+            <Nav.Link as={NavLink} to="/about-us">About</Nav.Link>
+            <Nav.Link as={NavLink} to="/contact">Contact</Nav.Link>
+            <Nav.Link as={NavLink} to="/products">Products</Nav.Link>
+            <Nav.Link as={NavLink} to="/categories">Categories</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
             </NavDropdown>
           </Nav>
 
-         <Nav>
-            <Nav.Link href="#home">login</Nav.Link>
-            <Nav.Link href="#link">register</Nav.Link>
-        </Nav> 
+          <Nav>
+            <Nav.Link href="#home">Login</Nav.Link>
+            <Nav.Link href="#link">Register</Nav.Link>
+          </Nav>
         </Navbar.Collapse>
-       </Navbar>
-
-      </header>
-   )
+      </Navbar>
+    </header>
+  )
 }
 
 export default Header
