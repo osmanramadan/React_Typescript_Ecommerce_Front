@@ -1,6 +1,8 @@
-import { useState } from "react"
-import type { Product } from "../../../types/product"
+import { memo, useEffect, useRef, useState } from "react"
+import type { IProduct } from "../../../types/product"
 import styles from './styles.module.css'
+import { useAppDispatch, useAppSelector} from "../../../store/hooks"
+import { addCartItem } from "../../../store/cart/CartSlice"
 
 const {
   card,
@@ -24,8 +26,7 @@ const {
 } = styles
 
 interface ProductItemProps {
-  product: Product
-  onAddToCart?: (product: Product) => void
+  product: IProduct
 }
 
 const Star = ({ filled }: { filled: boolean }) => (
@@ -40,17 +41,37 @@ const Star = ({ filled }: { filled: boolean }) => (
   </svg>
 )
 
-const  ProductItem = ({ product, onAddToCart }: ProductItemProps) => {
+const  ProductItem = memo(({ product}: ProductItemProps) => {
+    
+  const quantity = useAppSelector((state) => state.cart.items[product.id] ?? 0 );
+
+ const dispatch = useAppDispatch();
+  
   
   const [wishlisted, setWishlisted] = useState(false)
   const [justAdded, setJustAdded] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const [imgError, setImgError] = useState(false)
+  
+  const existNumProductInStock = product.numInStock - quantity
+  const isStillAvailable = existNumProductInStock <= 0 ? false : true
+  
+  // Cleanup on unmount
+  useEffect(() => {
+
+  return () => {  // ← this is the cleanup function
+    if (timerRef.current) clearTimeout(timerRef.current);
+  }}, []);
+
 
   const handleAddToCart = () => {
     if (!product.inStock) return
-    onAddToCart?.(product)
+    dispatch(addCartItem({id:product.id}))
     setJustAdded(true)
-    setTimeout(() => setJustAdded(false), 1500)
+
+    if (timerRef.current) clearTimeout(timerRef.current); // guard against rapid clicks
+    timerRef.current = setTimeout(() => setJustAdded(false), 1500);
   }
 
   const badgeClass =
@@ -64,7 +85,7 @@ const  ProductItem = ({ product, onAddToCart }: ProductItemProps) => {
         {product.badge && (
           <span className={`${badge} ${badgeClass}`}>{product.badge}</span>
         )}
-
+      
         <button
           type="button"
           className={wishlistBtn}
@@ -111,6 +132,7 @@ const  ProductItem = ({ product, onAddToCart }: ProductItemProps) => {
 
         <div className={priceRow}>
           <span className={price}>${product.price.toFixed(2)}</span>
+          {quantity}
           {product.oldPrice && (
             <span className={oldPrice}>${product.oldPrice.toFixed(2)}</span>
           )}
@@ -120,13 +142,13 @@ const  ProductItem = ({ product, onAddToCart }: ProductItemProps) => {
           type="button"
           className={`${addToCartBtn} ${justAdded ? added : ''}`}
           onClick={handleAddToCart}
-          disabled={!product.inStock}
+          disabled={!product.inStock || justAdded || !isStillAvailable}
         >
-          {!product.inStock ? "Out of stock" : justAdded ? "Added ✓" : "Add to cart"}
+          {!product.inStock || !isStillAvailable ? "Out of stock" : justAdded ? "Added ✓" : "Add to cart"}
         </button>
       </div>
     </article>
   )
-}
+})
 
 export default ProductItem

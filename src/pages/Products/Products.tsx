@@ -1,13 +1,17 @@
-import { useMemo, useState } from "react"
-import { useLoaderData, type LoaderFunctionArgs } from "react-router-dom"
+import { useEffect, useMemo, useState } from "react"
+import { useParams } from "react-router-dom"
 import { Container } from "react-bootstrap"
 import { Link } from "react-router-dom"
-import { getCategory, isValidCategory,CATEGORIES } from "../../data/categories"
-import { MOCK_PRODUCTS } from "../../data/mockProducts"
-import type { Product } from "../../types/product"
-import type Category from "../../types/category"
+import type { IProduct } from "../../types/product"
 import ProductItem from "../../components/ecommerce/Product/Product"
 import styles from './styles.module.css'
+import { useAppSelector,useAppDispatch} from "../../store/hooks"
+import { ActGetProducts, ClearProducts } from "../../store/products/ProductsSlice"
+import Loading from "../../components/message/Loading/Loading"
+import { CATEGORIES } from "../../data/categories"
+import GridList from "../../components/shared/GridList/GridList"
+
+
 
 const {
   page,
@@ -23,40 +27,37 @@ const {
   navlinks,
 } = styles
 
-interface ProductsLoaderData {
-  category: Category
-  products: Product[]
-}
 
-export  const productsLoader = ({ params }: LoaderFunctionArgs) => {
-  const { prefex } = params
 
-  if (!isValidCategory(prefex)) {
-    throw new Response("Category not found", { status: 400 , statusText:'Category not found' })
-  }
 
-  const category = getCategory(prefex!) as Category
-  const products = MOCK_PRODUCTS.filter((p) => p.category === category.slug)
 
-  return { category, products }
-}
 
 type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating'
 
+
+
 const Products = () => {
+  const param = useParams()
+  const dispatch = useAppDispatch();
   
-  try{  
-     var { category, products } = useLoaderData() as ProductsLoaderData
+  
+  const { loading , records , error } = useAppSelector((state)=>state.products)
 
-  }catch(e){
 
-    //var category = getCategory("home") as Category
-   // var products = MOCK_PRODUCTS.filter((p) => p.category === category.slug)
-   var category  = {slug:'',name:'',image:'',description:''}  as Category
 
-   var products = MOCK_PRODUCTS
+useEffect(() => {
+   dispatch(ActGetProducts(param.prefex ?? ''));
 
-  }
+   return () => {
+      dispatch(ClearProducts());
+   };
+}, [dispatch, param.prefex]);
+
+
+
+  let products = records.length > 0 ? records:[]
+
+  
 
   const [sortBy, setSortBy] = useState<SortOption>('featured')
 
@@ -74,18 +75,16 @@ const Products = () => {
     }
   }, [products, sortBy])
 
-  const handleAddToCart = (product: Product) => {
-    // TODO: wire into real cart state/context
-    console.log('Added to cart:', product.id)
-  }
-
+ 
   return (
     <Container className={page}>
-      <nav className={breadcrumb} aria-label="Breadcrumb">
-        <Link to="/">Home</Link> / <Link to="/products">Shop</Link>  / <span>{category.name}</span>
+
+      <Loading status={loading} error={error}>
+        <nav className={breadcrumb} aria-label="Breadcrumb">
+        <Link to="/">Home</Link> / <Link to="/products">Shop</Link>  / <span>{param.prefex}</span>
       </nav>
 
-    <div style={{display:'flex',justifyContent:'center',justifyItems:'center'}}>
+      <div style={{display:'flex',justifyContent:'center',justifyItems:'center'}}>
   
     <ul className={navlinks}>
       {CATEGORIES
@@ -96,18 +95,11 @@ const Products = () => {
             </Link>
           </li>
         ))}
-    </ul>
+       </ul>
   
   
-    </div>
-
-
-      <div className={headerRow}>
-        <div>
-          <h1 className={title}>{category.name}</h1>
-          <p className={description}>{category.description}</p>
-        </div>
       </div>
+
 
       <div className={toolbar}>
         <span className={resultCount}>
@@ -127,18 +119,20 @@ const Products = () => {
         </select>
       </div>
 
-      {sortedProducts.length === 0 ? (
+      {sortedProducts.length > 0 ? (
+        
+           <GridList records={sortedProducts}  renderItem={(record)=><ProductItem key={record.id} product={record}/>}/>
+
+      ) : (
         <div className={empty}>
-          <p>No products in this category yet.</p>
+          <p>No products Found yet.</p>
           <Link to="/products">Browse all products</Link>
         </div>
-      ) : (
-        <div className={grid}>
-          {sortedProducts.map((product) => (
-            <ProductItem key={product.id} product={product} onAddToCart={handleAddToCart} />
-          ))}
-        </div>
-      )}
+      )
+      
+      
+      }
+      </Loading>
     </Container>
   )
 }

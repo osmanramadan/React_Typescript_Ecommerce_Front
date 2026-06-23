@@ -1,7 +1,6 @@
 import { Badge } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
-import NavDropdown from 'react-bootstrap/NavDropdown'
 import { NavLink } from "react-router-dom"
 import styles from './styles.module.css'
 import Basket from "../../ecommerce/Basket/Basket"
@@ -13,7 +12,7 @@ const Header = () => {
     <header>
       <div className={topHeaderContainer}>
         <h1><span>eco</span><Badge>ma</Badge></h1>
-        <Basket itemCount={2} />
+        <Basket/>
       </div>
 
       <Navbar expand="lg" bg="dark" data-bs-theme="dark">
@@ -25,13 +24,6 @@ const Header = () => {
             <Nav.Link as={NavLink} to="/contact">Contact</Nav.Link>
             <Nav.Link as={NavLink} to="/products">Products</Nav.Link>
             <Nav.Link as={NavLink} to="/categories">Categories</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-            </NavDropdown>
           </Nav>
 
           <Nav>

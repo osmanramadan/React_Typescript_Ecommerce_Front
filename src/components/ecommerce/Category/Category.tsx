@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import type Category from "../../../types/category"
+import type {ICategory} from "../../../types/category"
 import styles from './styles.module.css'
 
 const {
@@ -15,7 +15,7 @@ const {
 
 
 
-const CategoryItem = ({category} : {category:Category}) => {
+const CategoryItem = ({category} : {category:ICategory}) => {
   const [imgError, setImgError] = useState(false)
 
   return (

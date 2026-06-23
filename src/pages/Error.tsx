@@ -16,6 +16,7 @@ const RouteError = () => {
         text =   error.statusText
   }
 
+
   return (
     <div style={{
       minHeight: '70vh',

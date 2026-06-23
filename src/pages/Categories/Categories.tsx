@@ -5,6 +5,9 @@ import styles from './styles.module.css'
 import { useEffect } from "react"
 import {ActGetCategories} from "../../store/categories/CategoriesSlice"
 import { useAppSelector,useAppDispatch} from "../../store/hooks"
+import Loading from "../../components/message/Loading/Loading"
+import GridList from "../../components/shared/GridList/GridList"
+
 
 const { page, header, title, subtitle, grid } = styles
 
@@ -19,28 +22,22 @@ const Categories = () => {
   },[dispatch])
 
    
-            
-
-
-  let CatsList = records.length > 1 && loading == "succeeded" ? records.map((category)=>
-  
-    <CategoryItem key={category.slug} category={category} />
-
- ): loading == "failed" ? <h1>Server Down </h1>:'No Found Categories Yet'
  
   return (
 
     <Container className={page}>
-      <div className={header}>
-        <h1 className={title}>Shop by category</h1>
-        <p className={subtitle}>Find what you need, sourced and packaged responsibly.</p>
-      </div>
+      <Loading status={loading} error={error}>
+            <div className={header}>
+               <h1 className={title}>Shop by category</h1>
+               <p className={subtitle}>Find what you need, sourced and packaged responsibly.</p>
+               </div>
 
-      <div className={grid}>
-         {
-          CatsList
-         }
-      </div>
+               {
+                 records.length > 1 && loading == "succeeded" ?  
+                 <GridList records={records}  renderItem={(record)=><CategoryItem key={record.id}  category={record} />} /> :
+                 loading == "failed" ? <h1> Server Down </h1>:'No Found Categories Yet'
+               }
+          </Loading>
     </Container>
   )
 }

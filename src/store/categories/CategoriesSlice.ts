@@ -9,7 +9,9 @@ const initialState : ICategoiesState = {
     records:[],
     loading:'idle',
     error:null
-}
+} 
+
+
 
 
 const categoriesSlice = createSlice(
