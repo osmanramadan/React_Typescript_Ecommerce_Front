@@ -1,6 +1,6 @@
-import { createSlice , createSelector} from "@reduxjs/toolkit";
+import { createSlice , createSelector, type PayloadAction} from "@reduxjs/toolkit";
 import type ICartState from "../../types/cart";
-import type { RootState } from '../index'
+import ActGetCart from "./actions/ActCart";
 
 
 
@@ -8,7 +8,9 @@ import type { RootState } from '../index'
 const initialState : ICartState= {
 
    items:{},
-   productFullData:[]
+   productsFullData:[],
+   error:null,
+   loading:'idle'
 } 
 
 
@@ -24,26 +26,55 @@ const cartSlice = createSlice(
                  }else{
                      state.items[id]=1
                  }
-            }
-        },
+            },
+           
+            rmCartItem :  (state,action)=>{
+                 const id = action.payload.id
+                 delete state.items[id]
+                 state.productsFullData = state.productsFullData.filter((p) => p.id !== id);
+                
+            },
+            changeCartItemQuantity: (state, action: PayloadAction<{ id: number; type: "inc" | "dec" }>) => {
+            const { id, type } = action.payload;
+                if (type === "inc") {
+                      state.items[id]++;
+               } else {
+                   if (state.items[id] > 1) {
+                      state.items[id]--;
+                     }
+               }
+               },
+                 },
+
+        extraReducers: (builder) => {
+              builder.addCase(ActGetCart.pending, (state) => {
+               state.loading = "pending",
+               state.error = null
+          }),
+              builder.addCase(ActGetCart.fulfilled, (state , action) => {
+               state.loading = "succeeded",
+               state.productsFullData = action.payload
+          }),
+              builder.addCase(ActGetCart.rejected, (state , action ) => {
+  
+               state.loading = "failed"
+               
+               if(action.payload && typeof action.payload === "string"){
+                  state.error = action.payload
+
+               }
+          })
+
+    }
        
     }
 )
 
 
 
-const cartItemsCount = createSelector(
-  (state: RootState) => state.cart.items,
-  (items) =>{
-    return Object.values(items).reduce(
-      (total, quantity) => total + quantity,
-      0
-    )}
-);
 
 
 
-
-export {cartItemsCount}
-export const {addCartItem} = cartSlice.actions
+export {ActGetCart}
+export const {addCartItem,rmCartItem,changeCartItemQuantity} = cartSlice.actions
 export default cartSlice.reducer

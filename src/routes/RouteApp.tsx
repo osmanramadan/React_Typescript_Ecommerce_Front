@@ -7,6 +7,7 @@ import Categories from '../pages/Categories/Categories';
 import MainLayout from '../layouts/MainLayout/MainLayout'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import RouteError from '../pages/Error';
+import CartPage from '../pages/Cart/Cart';
 
 
 
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
                     {
                     path:'products',
                     element:<Products/>
+                  },
+                    {
+                    path:'cart',
+                    element:<CartPage/>
                   },
 
                   { 

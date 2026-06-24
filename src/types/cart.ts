@@ -1,7 +1,10 @@
 import type { IProduct } from "./product";
+import type { Tloading } from "./shared";
 
 
 export default interface ICartState{
   items:Record<number,number>;
-  productFullData: IProduct[]
+  productsFullData: IProduct[];
+  error: null | string ;
+  loading:Tloading
 }

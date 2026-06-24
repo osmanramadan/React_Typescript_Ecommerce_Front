@@ -24,7 +24,7 @@ const ActGetProducts= createAsyncThunk('products/ActGetProducts',
 
         }catch (error){
             if (axios.isAxiosError(error)){
-                return rejectWithValue(error.response?.data.message)
+                return rejectWithValue(error.response?.data.message || error.message)
             }else{
                 return rejectWithValue('unkwon error')
             }
