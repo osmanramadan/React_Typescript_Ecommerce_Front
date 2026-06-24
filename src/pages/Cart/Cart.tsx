@@ -1,21 +1,19 @@
 import { Container } from "react-bootstrap";
 import { useAppSelector , useAppDispatch} from "../../store/hooks";
 import styles from "./styles.module.css";
-import CartItem from "../../components/ecommerce/Cart/CartItem";
 import CartSubtotal from "../../components/ecommerce/Cart/CartSubTotal";
 import { ActGetCart } from "../../store/cart/CartSlice";
 import { useCallback, useEffect } from "react";
 import Loading from "../../components/message/Loading/Loading";
-import { Link } from "react-router-dom";
 import { rmCartItem , changeCartItemQuantity } from "../../store/cart/CartSlice";
+import CartItemList from "../../components/ecommerce/Cart/CartItemList";
 
 
 const {
   page,
   header,
   title,
-  subtitle,
-  empty
+  subtitle
 } = styles;
 
 const CartPage = () => {
@@ -24,11 +22,16 @@ const CartPage = () => {
 
   const {items,productsFullData,loading,error}= useAppSelector((state) => state.cart); 
   
-  const totalPrice = productsFullData&&productsFullData.length > 0 ? productsFullData.reduce((total, product) => {
+  const totalPrice = productsFullData && productsFullData.length > 0 ? productsFullData.reduce((total, product) => {
   const quantity = items[product.id] ?? 0;
 
   return total + product.price * quantity;
   }, 0):0;
+
+  const products = productsFullData.length > 0 ? productsFullData.map((product)=>({
+      ...product,
+      quantity:items[product.id]
+  })):[]
 
 
 
@@ -62,23 +65,7 @@ const CartPage = () => {
         </p>
       </div>
 
-      {productsFullData && productsFullData.length > 0 ? productsFullData.map((product) => (
-        <CartItem
-        key={product.id}
-        product={product}
-        quantityValue={items[product.id]}
-        rmCartItem={rmItemFromCart}
-        changeQuantity={changeQuantity}
-
-        />
-      )):(
-        <div className={empty}>
-          <p>Your cart is empty.</p>
-          <Link to="/products">
-            Continue Shopping
-          </Link>
-        </div>
-      )}
+      <CartItemList products={products} rmCartItem={rmItemFromCart} changeQuantity={changeQuantity}/>
 
       <CartSubtotal totalPrice={totalPrice}/>
       </Loading>

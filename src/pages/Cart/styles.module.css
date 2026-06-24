@@ -84,14 +84,3 @@
   opacity: 0.9;
 }
 
-.empty {
-  text-align: center;
-  padding: 4rem 0;
-  color: #6c757d;
-}
-
-.empty a {
-  color: #198754;
-  text-decoration: none;
-  font-weight: 600;
-}

@@ -39,9 +39,7 @@ const Star = ({ filled }: { filled: boolean }) => (
   </svg>
 );
 
-const CartItem = memo(
-  ({ product, quantityValue,rmCartItem , changeQuantity
-  }: CartItemProps) => {
+const CartItem = memo(({ product, quantityValue,rmCartItem , changeQuantity}: CartItemProps) => {
 
     
    console.log("from cart item ",'**************')
