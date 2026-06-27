@@ -85,12 +85,21 @@ const CartItem = memo(
           </div>
 
           <div className={actions}>
-            {product.numInStock > quantityValue?<button className={actionBtn} onClick={() => changeQuantity(product.id, "inc")}>
-              +
-            </button>:''}
+         <button
+          className={actionBtn}
+          onClick={() => changeQuantity(product.id, "inc")}
+          disabled={quantityValue >= product.numInStock}
+          title={quantityValue >= product.numInStock ? "Max stock reached" : ""}
+          >
+           +
+          </button>
 
-            <button className={actionBtn} onClick={() => changeQuantity(product.id, "dec")}>
-              -
+            <button
+               className={actionBtn}
+               onClick={() => quantityValue > 1 && changeQuantity(product.id, "dec")}
+               disabled={quantityValue <= 1}
+              >
+                  -
             </button>
 
             <button className={removeBtn} onClick={()=>rmCartItem(product.id)}>

@@ -3,7 +3,7 @@ import CategoryItem from "../../components/ecommerce/Category/Category"
 import styles from './styles.module.css'
 
 import { useEffect } from "react"
-import {ActGetCategories} from "../../store/categories/CategoriesSlice"
+import {ActGetCategories, ClearCategories} from "../../store/categories/CategoriesSlice"
 import { useAppSelector,useAppDispatch} from "../../store/hooks"
 import Loading from "../../components/message/Loading/Loading"
 import GridList from "../../components/shared/GridList/GridList"
@@ -18,7 +18,11 @@ const Categories = () => {
   const { loading , records , error } = useAppSelector((state)=>state.categories)
 
   useEffect(()=>{
-      dispatch(ActGetCategories());
+      const promise = dispatch(ActGetCategories());
+      return () => {
+      promise.abort()
+      dispatch(ClearCategories());
+      };
   },[dispatch])
 
    

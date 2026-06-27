@@ -3,7 +3,7 @@ import { useAppSelector , useAppDispatch} from "../../store/hooks";
 import styles from "./styles.module.css";
 import CartItem from "../../components/ecommerce/Cart/CartItem";
 import CartSubtotal from "../../components/ecommerce/Cart/CartSubTotal";
-import { ActGetCart } from "../../store/cart/CartSlice";
+import { ActGetCart, ClearCart } from "../../store/cart/CartSlice";
 import { useCallback, useEffect } from "react";
 import Loading from "../../components/message/Loading/Loading";
 import { Link } from "react-router-dom";
@@ -22,7 +22,8 @@ const CartPage = () => {
 
   const dispatch = useAppDispatch()
 
-  const {items,productsFullData,loading,error}= useAppSelector((state) => state.cart); 
+  const {productsFullData,loading,error}= useAppSelector((state) => state.cart); 
+  const items= useAppSelector((state) => state.cart.items); 
   
   const totalPrice = productsFullData&&productsFullData.length > 0 ? productsFullData.reduce((total, product) => {
   const quantity = items[product.id] ?? 0;
@@ -37,12 +38,19 @@ const CartPage = () => {
        dispatch(rmCartItem({id:id}))
    } ,[dispatch])
 
+
+   
    const changeQuantity = useCallback((id: number, type: "inc" | "dec") => {
     dispatch(changeCartItemQuantity({ id, type }));
    },[dispatch])
 
+
+
   useEffect(()=>{
     dispatch(ActGetCart())
+    return () => {
+      dispatch(ClearCart());
+   };
 
   },[dispatch])
 

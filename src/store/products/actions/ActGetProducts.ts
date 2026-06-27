@@ -9,15 +9,15 @@ import axiosInstance from "../../../api/axios";
 const ActGetProducts= createAsyncThunk('products/ActGetProducts',
     async (cat:string,thunkAPI)=>{
 
-        const {rejectWithValue} = thunkAPI ;
+        const {rejectWithValue,signal} = thunkAPI ;
 
         try{
             let res;
 
             if(cat){
-                 res = await axiosInstance.get<IProduct[]>(`/products?category=${cat}`)
+                 res = await axiosInstance.get<IProduct[]>(`/products?category=${cat}`,{signal})
             }else{
-                 res = await axiosInstance.get<IProduct[]>(`/products`)
+                 res = await axiosInstance.get<IProduct[]>(`/products`,{signal})
             }
             return res.data
           

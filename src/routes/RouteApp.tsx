@@ -1,21 +1,24 @@
-import Home from '../pages/Home';
-import Products from '../pages/Products/Products';
-import About from '../pages/About';
-import Contact from '../pages/Contact';
-import Categories from '../pages/Categories/Categories';
-
-import MainLayout from '../layouts/MainLayout/MainLayout'
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
-import RouteError from '../pages/Error';
-import CartPage from '../pages/Cart/Cart';
+const RouteError =lazy(()=>import('../pages/Error'));
+
+import Home from '../pages/Home';
+const  Products = lazy(()=>import("../pages/Products/Products"))
+const  About = lazy(()=>import("../pages/About"));
+const  Contact = lazy(()=>import('../pages/Contact'));
+const  Categories = lazy(()=>import('../pages/Categories/Categories'));
+
+const  MainLayout = lazy(()=>import('../layouts/MainLayout/MainLayout')) 
+const  CartPage = lazy(()=>import('../pages/Cart/Cart'));
+const  Wishlist =lazy(()=>import('../pages/Wishlist/Wishlist'));
 
 
 
 const router = createBrowserRouter([
     {
         path:'/',
-        errorElement:<RouteError/>,
-        element:<MainLayout/>,
+        errorElement:<Suspense fallback="Loading from lazy load"><RouteError/></Suspense>,
+        element:<Suspense fallback="Loading from lazy load"><MainLayout/></Suspense>,
         children:[
                   {
                      element:<Home/>,
@@ -23,7 +26,7 @@ const router = createBrowserRouter([
                   },
                    {
                     path:'products/:prefex',
-                    element:<Products/>,
+                    element:<Suspense fallback="Loading from lazy load"><Products/></Suspense>,
                     loader: ({ params }) => {
                        if ( typeof params.prefex !== "string" || !/^[a-z]+$/i.test(params.prefex)) {
 
@@ -37,26 +40,31 @@ const router = createBrowserRouter([
                    },
                     {
                     path:'products',
-                    element:<Products/>
+                    element:<Suspense fallback="Loading from lazy load"><Products/></Suspense>
                   },
                     {
                     path:'cart',
-                    element:<CartPage/>
+                    element:<Suspense fallback="Loading from lazy load"><CartPage/></Suspense>
                   },
+                    {
+                    path:'wishlist',
+                    element:<Suspense fallback="Loading from lazy load"><Wishlist/></Suspense>
+                  },
+
 
                   { 
                     path:'about-us',
-                    element:<About/>
+                    element:<Suspense fallback="Loading from lazy load"><About/></Suspense>
 
                   },
                     { 
                     path:'contact',
-                    element:<Contact/>
+                    element:<Suspense fallback="Loading from lazy load"><Contact/></Suspense>
 
                   },
                     { 
                     path:'categories',
-                    element:<Categories/>
+                    element:<Suspense fallback="Loading from lazy load"><Categories/></Suspense>
 
                   }
         ]

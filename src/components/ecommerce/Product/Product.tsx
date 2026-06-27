@@ -3,6 +3,8 @@ import type { IProduct } from "../../../types/product"
 import styles from './styles.module.css'
 import { useAppDispatch, useAppSelector} from "../../../store/hooks"
 import { addCartItem } from "../../../store/cart/CartSlice"
+import { ToggleWishlistLike } from "../../../store/wishlist/wishlistSlice"
+import { Spinner } from "react-bootstrap"
 
 const {
   card,
@@ -41,15 +43,20 @@ const Star = ({ filled }: { filled: boolean }) => (
   </svg>
 )
 
-const  ProductItem = memo(({ product}: ProductItemProps) => {
+const  ProductItem = memo(({product}: ProductItemProps) => {
     
   const quantity = useAppSelector((state) => state.cart.items[product.id] ?? 0 );
+  const liked = useAppSelector((state) => state.wishlist.itemsId.includes(product.id))
+  
 
- const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   
   
-  const [wishlisted, setWishlisted] = useState(false)
   const [justAdded, setJustAdded] = useState(false)
+
+  // note : loading useless here because dispatch not reactive async function but excute user side action (add productId to list items of wishlist, not to server )
+  const [isLoading, setIsLoading] = useState(false);
+
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [imgError, setImgError] = useState(false)
@@ -74,11 +81,22 @@ const  ProductItem = memo(({ product}: ProductItemProps) => {
     timerRef.current = setTimeout(() => setJustAdded(false), 1500);
   }
 
+
+  const handleToggleWishlistLike = () => {
+
+     if(isLoading)return
+     setIsLoading(true)
+     dispatch(ToggleWishlistLike({id:product.id}))
+     setIsLoading(false)
+  }
+
   const badgeClass =
     product.badge === 'new' ? badgeNew :
     product.badge === 'sale' ? badgeSale :
     product.badge === 'bestseller' ? badgeBestseller : ''
 
+
+  console.log("rendering product item")
   return (
     <article className={card}>
       <div className={imageWrap}>
@@ -89,19 +107,23 @@ const  ProductItem = memo(({ product}: ProductItemProps) => {
         <button
           type="button"
           className={wishlistBtn}
-          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          aria-pressed={wishlisted}
-          onClick={() => setWishlisted((w) => !w)}
+          aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
+          aria-pressed={liked}
+          onClick={handleToggleWishlistLike}
+
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
             <path
               d="M12 21s-7.5-4.6-10-9.1C0.4 8.6 1.8 5 5.3 4.2 7.6 3.7 9.8 4.7 12 7.3c2.2-2.6 4.4-3.6 6.7-3.1 3.5.8 4.9 4.4 3.3 7.7C19.5 16.4 12 21 12 21Z"
-              fill={wishlisted ? '#dc3545' : 'none'}
-              stroke={wishlisted ? '#dc3545' : '#fff'}
+              fill={liked ? '#dc3545' : 'none'}
+              stroke={liked ? '#dc3545' : '#fff'}
               strokeWidth="1.6"
             />
           </svg>
-        </button>
+          </button>
+
+        
+         
 
         {!imgError ? (
           <img

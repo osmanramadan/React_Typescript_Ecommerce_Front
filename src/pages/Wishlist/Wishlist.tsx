@@ -1,15 +1,13 @@
-import { useEffect, useMemo, useState } from "react"
-import { useParams } from "react-router-dom"
-import { Container } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import ProductItem from "../../components/ecommerce/Product/Product"
-import styles from './styles.module.css'
-import { useAppSelector,useAppDispatch} from "../../store/hooks"
-import { ActGetProducts, ClearProducts } from "../../store/products/ProductsSlice"
-import Loading from "../../components/message/Loading/Loading"
-import { CATEGORIES } from "../../data/categories"
-import GridList from "../../components/shared/GridList/GridList"
 
+import { useAppSelector,useAppDispatch} from "../../store/hooks"
+import { useEffect, useMemo, useState } from "react"
+import { ActGetWishlistProducts as ActGetWishlist, ClearWishlist } from "../../store/wishlist/wishlistSlice";
+import { Container } from "react-bootstrap";
+import Loading from "../../components/message/Loading/Loading";
+import { Link } from "react-router-dom";
+import styles from './styles.module.css'
+import GridList from "../../components/shared/GridList/GridList";
+import ProductItem from "../../components/ecommerce/Product/Product";
 
 
 const {
@@ -30,34 +28,29 @@ const {
 
 
 
+export default function Wishlist() {
 
-type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating'
-
-
-
-const Products = () => {
-  const param = useParams()
-  const dispatch = useAppDispatch();
+   const dispatch = useAppDispatch();
   
   
-  const { loading , records , error } = useAppSelector((state)=>state.products)
+  const { productsFullData , loading , error } = useAppSelector((state)=>state.wishlist)
 
 
+  useEffect(() => {
+   dispatch(ActGetWishlist());
+   
+      return () => {
+         dispatch(ClearWishlist());
+      };
+   
+   
+}, [dispatch]);
 
-useEffect(() => {
-    const promise = dispatch(ActGetProducts(param.prefex ?? ''));
 
-   return () => {
-      promise.abort()
-      dispatch(ClearProducts());
-   };
-}, [dispatch, param.prefex]);
+  type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating'
 
+  let products = productsFullData.length > 0 ? productsFullData:[]
 
-
-  let products = records.length > 0 ? records:[]
-
-  
 
   const [sortBy, setSortBy] = useState<SortOption>('featured')
 
@@ -75,31 +68,12 @@ useEffect(() => {
     }
   }, [products, sortBy])
 
- 
+
   return (
-    <Container style={{marginBottom:'200px'}} className={page}>
+         <Container className={page}>
 
       <Loading status={loading} error={error}>
-        <nav className={breadcrumb} aria-label="Breadcrumb">
-        <Link to="/">Home</Link> / <Link to="/products">Shop</Link>  / <span>{param.prefex}</span>
-      </nav>
-
-      <div style={{display:'flex',justifyContent:'center',justifyItems:'center'}}>
-  
-    <ul className={navlinks}>
-      {CATEGORIES
-        .map((category) => (
-          <li key={category.slug}>
-            <Link to={`/products/${category.slug}`}>
-              {category.slug}
-            </Link>
-          </li>
-        ))}
-       </ul>
-  
-  
-      </div>
-
+        
 
       <div className={toolbar}>
         <span className={resultCount}>
@@ -125,7 +99,7 @@ useEffect(() => {
 
       ) : (
         <div className={empty}>
-          <p>No products Found yet.</p>
+          <p>No liked products Found yet.</p>
           <Link to="/products">Browse all products</Link>
         </div>
       )
@@ -134,7 +108,4 @@ useEffect(() => {
       }
       </Loading>
     </Container>
-  )
-}
-
-export default Products
+  )}

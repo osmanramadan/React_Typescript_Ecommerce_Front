@@ -79,6 +79,11 @@
   cursor: pointer;
 }
 
+.actionBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .actionBtn:hover {
   background: #f8f9fa;
 }
@@ -117,3 +122,4 @@
   font-weight: 600;
   cursor: pointer;
 }
+

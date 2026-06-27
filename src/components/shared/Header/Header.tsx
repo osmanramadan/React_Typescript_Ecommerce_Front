@@ -4,15 +4,20 @@ import Navbar from 'react-bootstrap/Navbar'
 import { NavLink } from "react-router-dom"
 import styles from './styles.module.css'
 import Basket from "../../ecommerce/Basket/Basket"
+import Wishlist from "../../ecommerce/Wishlist/Wishlist"
 
-const { topHeaderContainer } = styles
+
+const { topHeaderContainer ,rightSideContainer } = styles
 
 const Header = () => {
   return (
     <header>
       <div className={topHeaderContainer}>
         <h1><span>eco</span><Badge>ma</Badge></h1>
-        <Basket/>
+        <div className={rightSideContainer}>
+           <Wishlist/>
+           <Basket/>
+        </div>
       </div>
 
       <Navbar expand="lg" bg="dark" data-bs-theme="dark">

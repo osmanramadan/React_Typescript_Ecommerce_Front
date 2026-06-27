@@ -27,6 +27,10 @@ const cartSlice = createSlice(
                      state.items[id]=1
                  }
             },
+            
+            ClearCart:(state)=>{
+                 state.productsFullData = []
+            },
            
             rmCartItem :  (state,action)=>{
                  const id = action.payload.id
@@ -76,5 +80,5 @@ const cartSlice = createSlice(
 
 
 export {ActGetCart}
-export const {addCartItem,rmCartItem,changeCartItemQuantity} = cartSlice.actions
+export const {addCartItem,rmCartItem,changeCartItemQuantity,ClearCart} = cartSlice.actions
 export default cartSlice.reducer

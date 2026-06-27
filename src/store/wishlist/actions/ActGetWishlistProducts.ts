@@ -6,33 +6,33 @@ import type { IProduct } from "../../../types/product";
 
 
 
-const ActGetCart = createAsyncThunk('cart/ActGetCart',
 
+const ActGetWishlistProducts= createAsyncThunk('wishlist/ActGetWishlist',
     async (_,thunkAPI)=>{
 
         const {rejectWithValue,getState} = thunkAPI ;
         
-        const {cart} = getState() as RootState
+        const {wishlist} = getState() as RootState
 
-        const itemsId = Object.keys(cart.items)
+        const itemsId = wishlist.itemsId
 
+        try{    
 
+            if(!itemsId.length){
+                return []
+            }
 
-        try{
+            const mixedItemsId = itemsId.map((v)=>{return  `id=${v}`}).join('&')
+
+                            
+            const res = await axiosInstance.get<IProduct[]>(`/products?${mixedItemsId}`)
+
+            return res.data
+            
+
           
-          if(!itemsId.length){
-             return []
-          }
-
-          const mixedItemsId = itemsId.map((v)=>{return  `id=${v}`}).join('&')
-            
-          const res = await axiosInstance.get<IProduct[]>(`/products?${mixedItemsId}`)
-
-          return res.data
-            
 
         }catch (error){
-            
             if (axios.isAxiosError(error)){
                 return rejectWithValue(error.response?.data.message || error.message)
             }else{
@@ -44,4 +44,4 @@ const ActGetCart = createAsyncThunk('cart/ActGetCart',
     }
 )
 
-export default ActGetCart
+export default ActGetWishlistProducts

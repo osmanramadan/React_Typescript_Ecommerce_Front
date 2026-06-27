@@ -12,8 +12,8 @@ type GridListProps<T> = {
 
 const GridList = <T,>({records,renderItem,}: GridListProps<T>)=>{
        
-    const renderList = records.length > 0 ? records.map((record) => renderItem(record)): "there are no items";
-
+  const renderList = records.length > 0 ? records.map((record) => renderItem(record)): "there are no items";
+  console.log("rendering from gridlist")
   return <div className={grid}>{renderList}</div>;
 };
 

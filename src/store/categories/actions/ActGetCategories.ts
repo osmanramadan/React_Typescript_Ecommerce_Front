@@ -8,11 +8,11 @@ import axiosInstance from "../../../api/axios";
 const ActGetCategories = createAsyncThunk('categories/ActGetCategories',
     async (_,thunkAPI)=>{
 
-        const {rejectWithValue} = thunkAPI ;
+        const {rejectWithValue,signal} = thunkAPI ;
 
         try{
 
-            const res = await axiosInstance.get<ICategory[]>('/categories')
+            const res = await axiosInstance.get<ICategory[]>('/categories',{signal})
             return res.data
 
         }catch (error){

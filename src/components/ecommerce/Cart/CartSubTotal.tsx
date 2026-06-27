@@ -23,4 +23,5 @@ const CartSubtotal = ({ totalPrice }: CartSubtotalProps) => {
   );
 };
 
+
 export default CartSubtotal;

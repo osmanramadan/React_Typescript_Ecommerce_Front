@@ -12,3 +12,8 @@
   gap: 0.25rem;
   font-size: 1.25rem;
 }
+.rightSideContainer {
+  display: flex;
+  align-items: center;
+  gap:"1rem";
+}
