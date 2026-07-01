@@ -1,3 +1,1 @@
-export type Tloading ='idle' | 'pending' | 'succeeded' | 'failed'
-
-
+export type Tloading = 'idle' | 'pending' | 'succeeded' | 'failed'

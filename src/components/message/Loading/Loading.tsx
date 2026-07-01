@@ -1,30 +1,34 @@
-import type { Tloading } from "../../../types/shared"
+import type { ReactNode } from 'react'
+import type { Tloading } from '@types'
+import ProductsSkeleton from '@components/message/Skeletons/ProductsSkeleton'
+import CategoriesSkeleton from '@components/message/Skeletons/CategoriesSkeleton'
+import CartSkeleton from '@components/message/Skeletons/CartSkeleton'
+import LottieHandler from '../LottieHandler/LottieHandler'
 
-
-
-type LoadingProps ={
-    status:Tloading,
-    error: null | string ,
-    children : React.ReactNode
+type LoadingProps = {
+  status: Tloading
+  error: null | string
+  children: ReactNode
+  type: keyof typeof skeletonsItems
 }
 
+const skeletonsItems = {
+  product: ProductsSkeleton,
+  category: CategoriesSkeleton,
+  cart: CartSkeleton,
+  wishlist: ProductsSkeleton
+}
 
+export default function Loading({ status, children, error, type }: LoadingProps) {
+  const Component = skeletonsItems[type]
 
+  if (status === 'pending') {
+    return <Component />
+  }
 
-export default function Loading({status,children,error}:LoadingProps) {
+  if (status === 'failed') {
+    return <LottieHandler type='error' autoplay={false} message={`${typeof error === 'string' ? `${error}` : "Un Expected Error"}`}/>
+  }
 
-   
-    if (status === 'pending')
-         return <div>Loading.........</div>
-    
-    if (status === 'failed')
-        return <div>Error Occure in server . {typeof error === 'string'?`{${error}}`:null}</div>
-             
-             
-   
-    return (
-      <div>
-        {children}
-      </div>
-   )
+  return <div>{children}</div>
 }

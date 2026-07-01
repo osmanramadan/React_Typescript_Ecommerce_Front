@@ -1,10 +1,9 @@
-import { memo, useEffect, useRef, useState } from "react"
-import type { IProduct } from "../../../types/product"
+import { memo, useEffect, useRef, useState } from 'react'
+import type { IProduct } from '@types'
 import styles from './styles.module.css'
-import { useAppDispatch, useAppSelector} from "../../../store/hooks"
-import { addCartItem } from "../../../store/cart/CartSlice"
-import { ToggleWishlistLike } from "../../../store/wishlist/wishlistSlice"
-import { Spinner } from "react-bootstrap"
+import { useAppDispatch, useAppSelector } from '@store/hooks'
+import { addCartItem } from '@store/cart/CartSlice'
+import { ToggleWishlistLike } from '@store/wishlist/wishlistSlice'
 
 const {
   card,
@@ -43,74 +42,69 @@ const Star = ({ filled }: { filled: boolean }) => (
   </svg>
 )
 
-const  ProductItem = memo(({product}: ProductItemProps) => {
-    
-  const quantity = useAppSelector((state) => state.cart.items[product.id] ?? 0 );
+const ProductItem = memo(({ product }: ProductItemProps) => {
+  const quantity = useAppSelector((state) => state.cart.items[product.id] ?? 0)
   const liked = useAppSelector((state) => state.wishlist.itemsId.includes(product.id))
-  
 
-  const dispatch = useAppDispatch();
-  
-  
+  const dispatch = useAppDispatch()
+
   const [justAdded, setJustAdded] = useState(false)
 
   // note : loading useless here because dispatch not reactive async function but excute user side action (add productId to list items of wishlist, not to server )
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const [imgError, setImgError] = useState(false)
-  
+
   const existNumProductInStock = product.numInStock - quantity
   const isStillAvailable = existNumProductInStock <= 0 ? false : true
-  
+
   // Cleanup on unmount
   useEffect(() => {
-
-  return () => {  // ← this is the cleanup function
-    if (timerRef.current) clearTimeout(timerRef.current);
-  }}, []);
-
+    return () => {
+      // ← this is the cleanup function
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
 
   const handleAddToCart = () => {
     if (!product.inStock) return
-    dispatch(addCartItem({id:product.id}))
+    dispatch(addCartItem({ id: product.id }))
     setJustAdded(true)
 
-    if (timerRef.current) clearTimeout(timerRef.current); // guard against rapid clicks
-    timerRef.current = setTimeout(() => setJustAdded(false), 1500);
+    if (timerRef.current) clearTimeout(timerRef.current) // guard against rapid clicks
+    timerRef.current = setTimeout(() => setJustAdded(false), 1500)
   }
 
-
   const handleToggleWishlistLike = () => {
-
-     if(isLoading)return
-     setIsLoading(true)
-     dispatch(ToggleWishlistLike({id:product.id}))
-     setIsLoading(false)
+    if (isLoading) return
+    setIsLoading(true)
+    dispatch(ToggleWishlistLike({ id: product.id }))
+    setIsLoading(false)
   }
 
   const badgeClass =
-    product.badge === 'new' ? badgeNew :
-    product.badge === 'sale' ? badgeSale :
-    product.badge === 'bestseller' ? badgeBestseller : ''
+    product.badge === 'new'
+      ? badgeNew
+      : product.badge === 'sale'
+        ? badgeSale
+        : product.badge === 'bestseller'
+          ? badgeBestseller
+          : ''
 
-
-  console.log("rendering product item")
+  console.log('rendering product item')
   return (
     <article className={card}>
       <div className={imageWrap}>
-        {product.badge && (
-          <span className={`${badge} ${badgeClass}`}>{product.badge}</span>
-        )}
-      
+        {product.badge && <span className={`${badge} ${badgeClass}`}>{product.badge}</span>}
+
         <button
           type="button"
           className={wishlistBtn}
-          aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={liked ? 'Remove from wishlist' : 'Add to wishlist'}
           aria-pressed={liked}
           onClick={handleToggleWishlistLike}
-
         >
           <svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -120,10 +114,7 @@ const  ProductItem = memo(({product}: ProductItemProps) => {
               strokeWidth="1.6"
             />
           </svg>
-          </button>
-
-        
-         
+        </button>
 
         {!imgError ? (
           <img
@@ -134,7 +125,16 @@ const  ProductItem = memo(({product}: ProductItemProps) => {
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className={image} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa', fontSize: '0.75rem' }}>
+          <div
+            className={image}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#aaa',
+              fontSize: '0.75rem',
+            }}
+          >
             No image
           </div>
         )}
@@ -155,9 +155,7 @@ const  ProductItem = memo(({product}: ProductItemProps) => {
         <div className={priceRow}>
           <span className={price}>${product.price.toFixed(2)}</span>
           {quantity}
-          {product.oldPrice && (
-            <span className={oldPrice}>${product.oldPrice.toFixed(2)}</span>
-          )}
+          {product.oldPrice && <span className={oldPrice}>${product.oldPrice.toFixed(2)}</span>}
         </div>
 
         <button
@@ -166,7 +164,11 @@ const  ProductItem = memo(({product}: ProductItemProps) => {
           onClick={handleAddToCart}
           disabled={!product.inStock || justAdded || !isStillAvailable}
         >
-          {!product.inStock || !isStillAvailable ? "Out of stock" : justAdded ? "Added ✓" : "Add to cart"}
+          {!product.inStock || !isStillAvailable
+            ? 'Out of stock'
+            : justAdded
+              ? 'Added ✓'
+              : 'Add to cart'}
         </button>
       </div>
     </article>

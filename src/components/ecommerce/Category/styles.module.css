@@ -6,7 +6,9 @@
   overflow: hidden;
   background-color: #fff;
   border: 1px solid #eee;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .card:hover,

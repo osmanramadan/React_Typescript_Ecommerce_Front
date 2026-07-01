@@ -1,14 +1,9 @@
-import styles from "./styles.module.css";
+import styles from './styles.module.css'
 
-
-const {
- summary,
- checkoutBtn
-  
-} = styles;
+const { summary, checkoutBtn } = styles
 
 interface CartSubtotalProps {
-  totalPrice: number;
+  totalPrice: number
 }
 
 const CartSubtotal = ({ totalPrice }: CartSubtotalProps) => {
@@ -16,12 +11,9 @@ const CartSubtotal = ({ totalPrice }: CartSubtotalProps) => {
     <div className={summary}>
       <h3>Total: ${totalPrice.toFixed(2)}</h3>
 
-      <button className={checkoutBtn}>
-        Proceed to Checkout
-      </button>
+      <button className={checkoutBtn}>Proceed to Checkout</button>
     </div>
-  );
-};
+  )
+}
 
-
-export default CartSubtotal;
+export default CartSubtotal

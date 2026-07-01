@@ -1,47 +1,33 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import axiosInstance from "../../../api/axios";
-import type { RootState } from "../../index";
-import type { IProduct } from "../../../types/product";
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import axiosInstance from '@api/axios'
+import type { RootState } from '@store/index'
+import type { IProduct } from '@types'
+import { getAxiosErrorMessage } from '@/utils/axiosError'
 
+const ActGetWishlistProducts = createAsyncThunk('wishlist/ActGetWishlist', async (_, thunkAPI) => {
+  const { rejectWithValue, getState, signal } = thunkAPI
 
+  const { wishlist } = getState() as RootState
 
+  const itemsId = wishlist.itemsId
 
-const ActGetWishlistProducts= createAsyncThunk('wishlist/ActGetWishlist',
-    async (_,thunkAPI)=>{
-
-        const {rejectWithValue,getState} = thunkAPI ;
-        
-        const {wishlist} = getState() as RootState
-
-        const itemsId = wishlist.itemsId
-
-        try{    
-
-            if(!itemsId.length){
-                return []
-            }
-
-            const mixedItemsId = itemsId.map((v)=>{return  `id=${v}`}).join('&')
-
-                            
-            const res = await axiosInstance.get<IProduct[]>(`/products?${mixedItemsId}`)
-
-            return res.data
-            
-
-          
-
-        }catch (error){
-            if (axios.isAxiosError(error)){
-                return rejectWithValue(error.response?.data.message || error.message)
-            }else{
-                return rejectWithValue('unkwon error')
-            }
-        }
-
-
+  try {
+    if (!itemsId.length) {
+      return []
     }
-)
+
+    const mixedItemsId = itemsId
+      .map((v) => {
+        return `id=${v}`
+      })
+      .join('&')
+
+    const res = await axiosInstance.get<IProduct[]>(`/products?${mixedItemsId}`, { signal })
+
+    return res.data
+  } catch (error) {
+    return rejectWithValue(getAxiosErrorMessage(error))
+  }
+})
 
 export default ActGetWishlistProducts

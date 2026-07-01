@@ -79,11 +79,9 @@
   font-weight: 600;
 }
 
-
-
-.navlinks{
-  display: flex;                  /* Activates flexbox on the list container */
-  list-style: none;               /* Removes default list bullet points */
+.navlinks {
+  display: flex; /* Activates flexbox on the list container */
+  list-style: none; /* Removes default list bullet points */
   margin: 0;
   padding: 0;
 }

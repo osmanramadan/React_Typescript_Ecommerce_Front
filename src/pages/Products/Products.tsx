@@ -1,137 +1,62 @@
-import { useEffect, useMemo, useState } from "react"
-import { useParams } from "react-router-dom"
-import { Container } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import ProductItem from "../../components/ecommerce/Product/Product"
+import { Container } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import ProductItem from '@components/ecommerce/Product/Product'
 import styles from './styles.module.css'
-import { useAppSelector,useAppDispatch} from "../../store/hooks"
-import { ActGetProducts, ClearProducts } from "../../store/products/ProductsSlice"
-import Loading from "../../components/message/Loading/Loading"
-import { CATEGORIES } from "../../data/categories"
-import GridList from "../../components/shared/GridList/GridList"
+import Loading from '@components/message/Loading/Loading'
+import { CATEGORIES } from '@data/categories'
+import GridList from '@components/shared/GridList/GridList'
+import { useProduct } from '@hooks/useProduct'
 
-
-
-const {
-  page,
-  breadcrumb,
-  headerRow,
-  title,
-  description,
-  toolbar,
-  resultCount,
-  sortSelect,
-  grid,
-  empty,
-  navlinks,
-} = styles
-
-
-
-
-
-
-type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating'
-
-
+const { page, breadcrumb, toolbar, resultCount, sortSelect, empty, navlinks } = styles
 
 const Products = () => {
-  const param = useParams()
-  const dispatch = useAppDispatch();
-  
-  
-  const { loading , records , error } = useAppSelector((state)=>state.products)
+  const { loading, sortedProducts, sortBy, setSortBy, error, category } = useProduct()
 
-
-
-useEffect(() => {
-    const promise = dispatch(ActGetProducts(param.prefex ?? ''));
-
-   return () => {
-      promise.abort()
-      dispatch(ClearProducts());
-   };
-}, [dispatch, param.prefex]);
-
-
-
-  let products = records.length > 0 ? records:[]
-
-  
-
-  const [sortBy, setSortBy] = useState<SortOption>('featured')
-
-  const sortedProducts = useMemo(() => {
-    const list = [...products]
-    switch (sortBy) {
-      case 'price-asc':
-        return list.sort((a, b) => a.price - b.price)
-      case 'price-desc':
-        return list.sort((a, b) => b.price - a.price)
-      case 'rating':
-        return list.sort((a, b) => b.rating - a.rating)
-      default:
-        return list
-    }
-  }, [products, sortBy])
-
- 
   return (
-    <Container style={{marginBottom:'200px'}} className={page}>
-
-      <Loading status={loading} error={error}>
+    <Container style={{ marginBottom: '200px' }} className={page}>
+      <Loading status={loading} error={error} type="product">
         <nav className={breadcrumb} aria-label="Breadcrumb">
-        <Link to="/">Home</Link> / <Link to="/products">Shop</Link>  / <span>{param.prefex}</span>
-      </nav>
+          <Link to="/">Home</Link> / <Link to="/products">Shop</Link> / <span>{category}</span>
+        </nav>
 
-      <div style={{display:'flex',justifyContent:'center',justifyItems:'center'}}>
-  
-    <ul className={navlinks}>
-      {CATEGORIES
-        .map((category) => (
-          <li key={category.slug}>
-            <Link to={`/products/${category.slug}`}>
-              {category.slug}
-            </Link>
-          </li>
-        ))}
-       </ul>
-  
-  
-      </div>
-
-
-      <div className={toolbar}>
-        <span className={resultCount}>
-          {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
-        </span>
-
-        <select
-          className={sortSelect}
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as SortOption)}
-          aria-label="Sort products"
-        >
-          <option value="featured">Featured</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="rating">Top Rated</option>
-        </select>
-      </div>
-
-      {sortedProducts.length > 0 ? (
-        
-       <GridList records={sortedProducts}  renderItem={(record)=><ProductItem key={record.id} product={record}/>}/>
-
-      ) : (
-        <div className={empty}>
-          <p>No products Found yet.</p>
-          <Link to="/products">Browse all products</Link>
+        <div style={{ display: 'flex', justifyContent: 'center', justifyItems: 'center' }}>
+          <ul className={navlinks}>
+            {CATEGORIES.map((categoryItem) => (
+              <li key={categoryItem.slug}>
+                <Link to={`/products/${categoryItem.slug}`}>{categoryItem.slug}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
-      )
-      
-      
-      }
+
+        <div className={toolbar}>
+          <span className={resultCount}>
+            {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
+          </span>
+
+          <select
+            className={sortSelect}
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+            aria-label="Sort products"
+          >
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
+        </div>
+
+        {sortedProducts.length > 0 ? (
+          <GridList
+            records={sortedProducts}
+            renderItem={(record) => <ProductItem key={record.id} product={record} />}
+          />
+        ) : (
+          <div className={empty}>
+            <p>No products found yet.</p>
+          </div>
+        )}
       </Loading>
     </Container>
   )

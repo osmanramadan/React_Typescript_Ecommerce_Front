@@ -1,30 +1,17 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import type {ICategory} from "../../../types/category";
-import axiosInstance from "../../../api/axios";
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import type { ICategory } from '@types'
+import axiosInstance from '@api/axios'
+import { getAxiosErrorMessage } from '@/utils/axiosError'
 
+const ActGetCategories = createAsyncThunk('categories/ActGetCategories', async (_, thunkAPI) => {
+  const { rejectWithValue, signal } = thunkAPI
 
-
-const ActGetCategories = createAsyncThunk('categories/ActGetCategories',
-    async (_,thunkAPI)=>{
-
-        const {rejectWithValue,signal} = thunkAPI ;
-
-        try{
-
-            const res = await axiosInstance.get<ICategory[]>('/categories',{signal})
-            return res.data
-
-        }catch (error){
-            if (axios.isAxiosError(error)){
-                return rejectWithValue(error.response?.data.message || error.message)
-            }else{
-                return rejectWithValue('unkwon error')
-            }
-        }
-
-
-    }
-)
+  try {
+    const res = await axiosInstance.get<ICategory[]>('/categories', { signal })
+    return res.data
+  } catch (error) {
+    return rejectWithValue(getAxiosErrorMessage(error))
+  }
+})
 
 export default ActGetCategories

@@ -1,4 +1,4 @@
-import type { Tloading } from "./shared"
+import type { Tloading } from './shared'
 
 export interface IProduct {
   id: number
@@ -11,12 +11,12 @@ export interface IProduct {
   image: string
   badge?: 'new' | 'sale' | 'bestseller'
   inStock: boolean
-  quantity?:number
-  numInStock:number
+  quantity?: number
+  numInStock: number
 }
 
-export default interface IProductsState{
-  records:IProduct[],
-  loading:Tloading,
-  error:string | null
+export interface IProductsState {
+  records: IProduct[]
+  loading: Tloading
+  error: string | null
 }

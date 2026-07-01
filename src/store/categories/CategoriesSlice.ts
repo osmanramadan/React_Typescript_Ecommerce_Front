@@ -1,50 +1,41 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type ICategoiesState from "../../types/category"
-import ActGetCategories from  './actions/ActGetCategories'
+import { createSlice } from '@reduxjs/toolkit'
+import { type ICategoiesState } from '@types'
+import ActGetCategories from './actions/ActGetCategories'
 
+const initialState: ICategoiesState = {
+  records: [],
+  loading: 'idle',
+  error: null,
+}
 
+const categoriesSlice = createSlice({
+  name: 'categories',
+  initialState,
+  reducers: {
+    ClearCategories: (state) => {
+      state.records = []
+    },
+  },
 
-const initialState : ICategoiesState = {
+  extraReducers: (builder) => {
+    ;(builder.addCase(ActGetCategories.pending, (state) => {
+      ;((state.loading = 'pending'), (state.error = null))
+    }),
+      builder.addCase(ActGetCategories.fulfilled, (state, action) => {
+        ;((state.loading = 'succeeded'), (state.records = action.payload))
+      }),
+      builder.addCase(ActGetCategories.rejected, (state, action) => {
+        state.loading = 'failed'
 
-    records:[],
-    loading:'idle',
-    error:null
-} 
+        if (action.payload && typeof action.payload === 'string') {
+          state.error = action.payload
+        }
+      })
+    )
+  },
+})
 
-
-
-
-const categoriesSlice = createSlice(
-    {
-        name:'categories',
-        initialState,
-        reducers:{
-            
-            ClearCategories:(state)=>{
-                 state.records = []
-            }
-        },
-        
-        extraReducers: (builder) => {
-              builder.addCase(ActGetCategories.pending, (state) => {
-               state.loading = "pending",
-               state.error = null
-          }),
-              builder.addCase(ActGetCategories.fulfilled, (state , action) => {
-               state.loading = "succeeded",
-               state.records = action.payload 
-          }),
-              builder.addCase(ActGetCategories.rejected, (state , action ) => {
-  
-               state.loading = "failed",
-               state.error = action.error as string
-          })
-
-    }
-    }
-)
-
-export {ActGetCategories}
-export const {ClearCategories} = categoriesSlice.actions
+export { ActGetCategories }
+export const { ClearCategories } = categoriesSlice.actions
 
 export default categoriesSlice.reducer

@@ -1,10 +1,9 @@
-import type { IProduct } from "./product";
-import type { Tloading } from "./shared";
+import type { IProduct } from './product'
+import type { Tloading } from './shared'
 
-
-export default interface ICartState{
-  items:Record<number,number>;
-  productsFullData: IProduct[];
-  error: null | string ;
-  loading:Tloading
+export interface ICartState {
+  items: Record<number, number>
+  productsFullData: IProduct[]
+  error: null | string
+  loading: Tloading
 }
