@@ -1,6 +1,7 @@
 .footer {
-  background-color: #1a1d20;
-  color: rgba(255, 255, 255, 0.65);
+  width: 100%;
+  background: linear-gradient(180deg, #0f172a 0%, #0E53BA 100%);
+  color: rgba(255, 255, 255, 0.75);
   padding: 3rem 0 0;
   font-size: 0.9rem;
   margin-top: auto;
@@ -20,8 +21,8 @@
   padding: 0.05rem 0.4rem;
   font-size: 0.85rem;
   font-weight: 600;
-  background-color: #2e7d32;
-  color: #fff;
+  background-color: #ffffff;
+  color: #0E53BA;
   border-radius: 4px;
 }
 
@@ -81,7 +82,7 @@
 
 .socialLink:hover,
 .socialLink:focus-visible {
-  background-color: #2e7d32;
+  background-color: rgba(255, 255, 255, 0.18);
   color: #fff;
 }
 
@@ -113,14 +114,16 @@
 
 .newsletterButton {
   flex-shrink: 0;
-  background-color: #2e7d32 !important;
-  border-color: #2e7d32 !important;
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #0E53BA !important;
 }
 
 .newsletterButton:hover,
 .newsletterButton:focus-visible {
-  background-color: #256428 !important;
-  border-color: #256428 !important;
+  background-color: #eaf3ff !important;
+  border-color: #eaf3ff !important;
+  color: #0E53BA !important;
 }
 
 .bottomBar {

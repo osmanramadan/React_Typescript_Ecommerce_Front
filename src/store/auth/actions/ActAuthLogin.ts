@@ -11,8 +11,10 @@ const ActAuthLogin = createAsyncThunk('login/ActAuthLogin', async (data:signInTy
   const { rejectWithValue, signal } = thunkAPI
 
   try {
+
     const res = await axiosInstance.post<IAuthResponse>('/login',data, { signal })
     return res.data
+    
   } catch (error) {
     
     return rejectWithValue(getAxiosErrorMessage(error))

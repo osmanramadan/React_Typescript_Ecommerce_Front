@@ -15,6 +15,7 @@ const Categories = lazy(() => import('@pages/Categories/Categories'))
 const MainLayout = lazy(() => import('@layouts/MainLayout/MainLayout'))
 const CartPage = lazy(() => import('@pages/Cart/Cart'))
 const Wishlist = lazy(() => import('@pages/Wishlist/Wishlist'))
+const EditProfile = lazy(() => import('@pages/Profile/EditProfile'))
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,16 @@ const router = createBrowserRouter([
           </PageSuspenseFallback>
         )
       },
+            {
+              path: 'profile/edit',
+              element: (
+                <PageSuspenseFallback>
+                  <ProtectedRoute>
+                    <EditProfile />
+                  </ProtectedRoute>
+                </PageSuspenseFallback>
+              ),
+            },
       {
         path: 'products/:prefex',
         element: (

@@ -1,9 +1,10 @@
 import { memo, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { IProduct } from '@types'
 import styles from './styles.module.css'
 import { useAppDispatch, useAppSelector } from '@store/hooks'
 import { addCartItem } from '@store/cart/CartSlice'
-import { ToggleWishlistLike } from '@store/wishlist/wishlistSlice'
+import { ActLikeToggle } from '@store/wishlist/wishlistSlice'
 
 const {
   card,
@@ -45,8 +46,10 @@ const Star = ({ filled }: { filled: boolean }) => (
 const ProductItem = memo(({ product }: ProductItemProps) => {
   const quantity = useAppSelector((state) => state.cart.items[product.id] ?? 0)
   const liked = useAppSelector((state) => state.wishlist.itemsId.includes(product.id))
+  const isAuthenticated = useAppSelector((state) => Boolean(state.auth.user && state.auth.accessToken))
 
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const [justAdded, setJustAdded] = useState(false)
 
@@ -77,11 +80,24 @@ const ProductItem = memo(({ product }: ProductItemProps) => {
     timerRef.current = setTimeout(() => setJustAdded(false), 1500)
   }
 
-  const handleToggleWishlistLike = () => {
+  const handleToggleWishlistLike = async () => {
     if (isLoading) return
+
+    if (!isAuthenticated) {
+      navigate('/login', {
+        replace: false,
+        state: { message: 'Please log in to add items to your wishlist.' },
+      })
+      return
+    }
+
     setIsLoading(true)
-    dispatch(ToggleWishlistLike({ id: product.id }))
-    setIsLoading(false)
+
+    try {
+      await dispatch(ActLikeToggle(product.id)).unwrap()
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const badgeClass =

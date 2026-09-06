@@ -13,7 +13,7 @@ const ActGetCart = createAsyncThunk(
     const { cart } = getState() as RootState
 
     const itemsId = Object.keys(cart.items)
-
+    console.log('itemsId', itemsId)
     try {
       if (!itemsId.length) {
         return []

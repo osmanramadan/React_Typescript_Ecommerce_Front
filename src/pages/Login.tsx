@@ -1,60 +1,32 @@
 import { Alert, Button, Container, Form, Spinner } from 'react-bootstrap'
-import { useForm, type SubmitHandler } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, useSearchParams} from 'react-router-dom'
-import { signInSchema, type signInType } from '@/validation/loginSchema'
-import { ActAuthLogin, authClear } from '@/store/auth/authSlice'
+import { Link, useLocation } from 'react-router-dom'
 import Input from '@/components/forms/Input/Input'
-import { useAppDispatch, useAppSelector } from '@store/hooks'
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-
-
-
+import useLogin from '@/hooks/useLogin'
 
 export default function Login() {
-const [searchParams] = useSearchParams();
-
-  const msg = searchParams.get("msg");
-  
-  const nav = useNavigate()
-  const dispatch = useAppDispatch()
-  const {loading,error} = useAppSelector((state) => state.auth)
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<signInType>({
-    mode: "onBlur",
-    resolver: zodResolver(signInSchema),
-  });
-
-  const submitForm: SubmitHandler<signInType> =async (data) => {
-    await dispatch(ActAuthLogin(data)).unwrap().then(_=>nav("/"))
-    
-  };
-
-   useEffect(() => {
-    return () => {
-      dispatch(authClear());
-    };
-  }, [dispatch]);
-
-
-
+  const location = useLocation()
+  const { msg, loading, error, register, handleSubmit, errors, submitForm } = useLogin()
+  const redirectMessage = (location.state as { message?: string } | null)?.message
 
   return (
     <Container className="py-5" style={{ maxWidth: 420 , marginBottom:"100px"}}>
       <h1 className="mb-4">Login</h1>
-        {msg === "success register" && (
-               <Alert variant="success" className="d-flex align-items-center gap-2 mb-3">
-             <span>✅</span>
-            <span>Registration completed successfully! You can now log in.</span>
-            </Alert>
-               )}
 
-       <Form  onSubmit={handleSubmit(submitForm)}>
+      {redirectMessage && (
+        <Alert variant="warning" className="d-flex align-items-center gap-2 mb-3">
+          <span>⚠️</span>
+          <span>{redirectMessage}</span>
+        </Alert>
+      )}
+
+      {msg === 'success register' && (
+        <Alert variant="success" className="d-flex align-items-center gap-2 mb-3">
+          <span>✅</span>
+          <span>Registration completed successfully! You can now log in.</span>
+        </Alert>
+      )}
+
+      <Form onSubmit={handleSubmit(submitForm)}>
             <Input
               name="email"
               label="Email Address"

@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 
 // redux
-
 import { store, persistor } from './store'
 
 // styles

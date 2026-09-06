@@ -41,15 +41,15 @@
 }
 
 .badgeNew {
-  background-color: #1565c0;
+  background-color: #0E53BA;
 }
 
 .badgeSale {
-  background-color: #c62828;
+  background-color: #d97706;
 }
 
 .badgeBestseller {
-  background-color: #2e7d32;
+  background-color: #0E53BA;
 }
 
 .wishlistBtn {
@@ -139,7 +139,7 @@
   padding: 0.5rem 0;
   border: none;
   border-radius: 6px;
-  background-color: #2e7d32;
+  background-color: #0E53BA;
   color: #fff;
   font-weight: 600;
   font-size: 0.85rem;
@@ -148,11 +148,11 @@
 }
 
 .addToCartBtn:hover:not(:disabled) {
-  background-color: #256428;
+  background-color: #0a479d;
 }
 
 .addToCartBtn:focus-visible {
-  outline: 2px solid #2e7d32;
+  outline: 2px solid #0E53BA;
   outline-offset: 2px;
 }
 
@@ -163,5 +163,5 @@
 }
 
 .added {
-  background-color: #1b5e20;
+  background-color: #0a479d;
 }

@@ -32,7 +32,7 @@ const Footer = () => {
 
   return (
     <footer className={footer}>
-      <Container>
+      <Container style={{ maxWidth: '1280px', width: 'calc(100% - 32px)' }}>
         <Row className="gy-4">
           <Col xs={12} md={4} lg={3}>
             <h2 className={brand}>

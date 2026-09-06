@@ -7,16 +7,23 @@ export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating'
 
 export function useWishlist() {
   const dispatch = useAppDispatch()
+  const userId = useAppSelector((state) => state.auth.user?.id)
   const { productsFullData, loading, error } = useAppSelector((state) => state.wishlist)
 
   useEffect(() => {
+    
+    if (!userId) {
+      dispatch(ClearWishlist())
+      return
+    }
+
     const promise = dispatch(ActGetWishlistProducts())
 
     return () => {
       promise.abort()
-      dispatch(ClearWishlist())
     }
-  }, [dispatch])
+    
+  }, [dispatch, userId])
 
   const products: IProduct[] = productsFullData.length > 0 ? productsFullData : []
 

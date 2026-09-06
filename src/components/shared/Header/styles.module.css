@@ -1,8 +1,20 @@
 .topHeaderContainer {
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.headerInner,
+.navInner {
+  width: min(1280px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.headerInner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 0;
 }
 
 .topHeaderContainer h1 {
@@ -12,8 +24,59 @@
   gap: 0.25rem;
   font-size: 1.25rem;
 }
+
+.navBar {
+  width: 100%;
+  background: #0E53BA;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.navInner {
+  width: min(1280px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.navInner :global(.navbar) {
+  width: 100%;
+  padding: 0.5rem 0;
+  background: transparent !important;
+}
+
 .rightSideContainer {
   display: flex;
   align-items: center;
-  gap: '1rem';
+  gap: 1rem;
+}
+
+.profileDropdown :global(.dropdown-toggle) {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.profileDropdown :global(.dropdown-toggle::after) {
+  border-top-color: #ffffff;
+}
+
+.profileDropdown :global(.dropdown-menu) {
+  background: #0E53BA;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 28px rgba(14, 83, 186, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem 0;
+}
+
+.profileDropdown :global(.dropdown-item) {
+  color: #ffffff;
+  padding: 0.7rem 1rem;
+  font-weight: 500;
+}
+
+.profileDropdown :global(.dropdown-item:hover),
+.profileDropdown :global(.dropdown-item:focus) {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.profileDropdown :global(.dropdown-divider) {
+  border-color: rgba(255, 255, 255, 0.18);
 }

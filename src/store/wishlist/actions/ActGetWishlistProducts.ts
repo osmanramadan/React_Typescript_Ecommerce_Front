@@ -7,18 +7,25 @@ import { getAxiosErrorMessage } from '@/utils/axiosError'
 const ActGetWishlistProducts = createAsyncThunk('wishlist/ActGetWishlist', async (_, thunkAPI) => {
   const { rejectWithValue, getState, signal } = thunkAPI
 
-  const { wishlist } = getState() as RootState
+  const { auth } = getState() as RootState
 
-  const itemsId = wishlist.itemsId
+  if (!auth.user?.id) {
+    return []
+  }
 
   try {
-    if (!itemsId.length) {
+    const userWishlist = await axiosInstance.get<{ productId: number }[]>(
+      `/wishlist?userId=${auth.user.id}`,
+      { signal }
+    )
+
+    if (!userWishlist.data.length) {
       return []
     }
 
-    const mixedItemsId = itemsId
+    const mixedItemsId = userWishlist.data
       .map((v) => {
-        return `id=${v}`
+        return `id=${v.productId}`
       })
       .join('&')
 

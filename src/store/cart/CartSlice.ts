@@ -13,6 +13,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+
     addCartItem: (state, action) => {
       const id = action.payload.id
       if (state.items[id]) {
@@ -31,6 +32,7 @@ const cartSlice = createSlice({
       delete state.items[id]
       state.productsFullData = state.productsFullData.filter((p) => p.id !== id)
     },
+    
     changeCartItemQuantity: (state, action: PayloadAction<{ id: number; type: 'inc' | 'dec' }>) => {
       const { id, type } = action.payload
       if (type === 'inc') {

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import  ActAuthLogin from './actions/ActAuthLogin'
-import  ActAuthSignUp from './actions/ActAuthSignUp'
+import ActAuthLogin from './actions/ActAuthLogin'
+import ActAuthSignUp from './actions/ActAuthSignUp'
+import ActAuthUpdate from './actions/ActAuthUpdate'
 import type { IAuthState } from '@/types'
 
 
@@ -25,44 +26,69 @@ const authSlice = createSlice({
       state.user = null,
       state.accessToken = null
     },
+    authUpdate: (state, action) => {
+      if (state.user && action.payload) {
+        state.user = { ...state.user, ...action.payload }
+      }
+    },
   },
   
   // login
   extraReducers: (builder) => {
-    ;(builder.addCase( ActAuthLogin.pending, (state) => {
-      ;((state.loading = 'pending'), (state.error = null))
-    }),
-      builder.addCase( ActAuthLogin.fulfilled, (state, action) => {
-        ;((state.loading = 'succeeded'), (state.user = action.payload.user,state.accessToken=action.payload.accessToken))
-      }),
-      builder.addCase( ActAuthLogin.rejected, (state, action) => {
+    builder
+      .addCase(ActAuthLogin.pending, (state) => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(ActAuthLogin.fulfilled, (state, action) => {
+        state.loading = 'succeeded'
+        state.user = action.payload.user
+        state.accessToken = action.payload.accessToken
+      })
+      .addCase(ActAuthLogin.rejected, (state, action) => {
         state.loading = 'failed'
 
         if (action.payload && typeof action.payload === 'string') {
           state.error = action.payload
         }
       })
-    ),
-    // register
-      (builder.addCase( ActAuthSignUp.pending, (state) => {
-      ;((state.loading = 'pending'), (state.error = null))
-    }),
-      builder.addCase( ActAuthSignUp.fulfilled, (state) => {
-        ;((state.loading = 'succeeded'), (state.user =null,state.accessToken=null))
-      }),
-      builder.addCase( ActAuthSignUp.rejected, (state, action) => {
+      .addCase(ActAuthSignUp.pending, (state) => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(ActAuthSignUp.fulfilled, (state) => {
+        state.loading = 'succeeded'
+        state.user = null
+        state.accessToken = null
+      })
+      .addCase(ActAuthSignUp.rejected, (state, action) => {
         state.loading = 'failed'
 
         if (action.payload && typeof action.payload === 'string') {
           state.error = action.payload
         }
       })
-    )
+      .addCase(ActAuthUpdate.pending, (state) => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(ActAuthUpdate.fulfilled, (state, action) => {
+        state.loading = 'succeeded'
+        if (state.user) {
+          state.user = { ...state.user, ...action.payload }
+        }
+      })
+      .addCase(ActAuthUpdate.rejected, (state, action) => {
+        state.loading = 'failed'
+
+        if (action.payload && typeof action.payload === 'string') {
+          state.error = action.payload
+        }
+      })
   },
-  
 })
 
-export { ActAuthLogin ,  ActAuthSignUp}
-export const { authClear ,authLogout } = authSlice.actions
+export { ActAuthLogin, ActAuthSignUp, ActAuthUpdate }
+export const { authClear, authLogout, authUpdate } = authSlice.actions
 
 export default authSlice.reducer

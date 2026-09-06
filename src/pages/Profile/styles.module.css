@@ -1,0 +1,15 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.empty {
+  padding: 1rem;
+  border: 1px dashed #ddd;
+  border-radius: 6px;
+}
