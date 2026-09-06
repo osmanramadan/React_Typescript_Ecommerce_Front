@@ -53,7 +53,7 @@
   margin-top: 0.75rem;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #2e7d32;
+  color: #000000;
 }
 
 .quantityRow {
@@ -103,21 +103,35 @@
 
 .summary {
   margin-top: 2rem;
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   border: 1px solid #e9ecef;
   border-radius: 12px;
   background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+.summary h3 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
 }
 
 .checkoutBtn {
   border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.9rem 2rem;
   border-radius: 8px;
   background: #0E53BA;
   color: white;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1.05rem;
   cursor: pointer;
+  min-width: 220px;
+}
+
+.checkoutBtn:hover {
+  opacity: 0.95;
 }

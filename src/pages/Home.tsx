@@ -72,7 +72,7 @@ export default function Home() {
                   boxShadow: '0 10px 20px rgba(13, 110, 253, 0.28)',
                 }}
               >
-                ma
+                mark
               </span>
             </div>
 
@@ -117,7 +117,7 @@ export default function Home() {
             >
               <img
                 src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80"
-                alt="Eco-ma product banner"
+                alt="Eco-mark product banner"
                 style={{ width: '100%', height: '270px', objectFit: 'cover', borderRadius: '16px' }}
               />
             </div>
@@ -152,7 +152,7 @@ export default function Home() {
           <Col md={6}>
             <h3 className="mb-3">Your everyday store, made simpler</h3>
             <p className="text-muted mb-3">
-              Eco-ma brings together trusted products, smooth browsing, and a cleaner shopping flow so
+              Eco-mark brings together trusted products, smooth browsing, and a cleaner shopping flow so
               you can discover what matters without the stress.
             </p>
             <p className="text-muted mb-0">

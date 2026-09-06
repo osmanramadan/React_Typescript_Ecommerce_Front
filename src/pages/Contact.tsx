@@ -7,7 +7,7 @@ export default function Contact() {
   const infoCards = [
     { icon: '📍', title: 'Visit us', text: '123 Market Street, Dubai, UAE' },
     { icon: '📞', title: 'Call us', text: '+971 55 123 4567' },
-    { icon: '✉️', title: 'Email us', text: 'support@eco-ma.com' },
+    { icon: '✉️', title: 'Email us', text: 'support@eco-mark.com' },
   ]
 
   return (

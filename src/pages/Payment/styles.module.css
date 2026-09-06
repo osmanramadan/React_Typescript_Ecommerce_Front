@@ -1,0 +1,45 @@
+.page {
+  padding: 2rem 1rem 4rem;
+}
+
+.card {
+  border: 1px solid #e9ecef;
+  border-radius: 16px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.summaryBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 1.05rem;
+}
+
+.form {
+  margin-top: 0.5rem;
+}
+
+.submitBtn {
+  width: 100%;
+  background: #0E53BA;
+  border-color: #0E53BA;
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+}
+
+.submitBtn:hover,
+.submitBtn:focus {
+  background: #0b48a2;
+  border-color: #0b48a2;
+}

@@ -19,7 +19,7 @@ const Header = () => {
         <div className={headerInner}>
           <h1>
             <span>eco</span>
-            <Badge>ma</Badge>
+            <Badge>mark</Badge>
           </h1>
           <HeaderContainer />
         </div>

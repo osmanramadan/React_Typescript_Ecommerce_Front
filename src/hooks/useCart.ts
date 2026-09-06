@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useAppDispatch, useAppSelector } from '@store/hooks'
-import { ActGetCart, ClearCart, rmCartItem, changeCartItemQuantity } from '@store/cart/CartSlice'
+import { ActGetCart, rmCartItem, changeCartItemQuantity } from '@store/cart/CartSlice'
 import type { IProduct } from '@types'
 
 export function useCart() {
@@ -13,7 +13,6 @@ export function useCart() {
 
     return () => {
       promise.abort()
-      dispatch(ClearCart())
     }
   }, [dispatch])
 

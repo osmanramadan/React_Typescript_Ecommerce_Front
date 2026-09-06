@@ -11,9 +11,24 @@ const Products = lazy(() => import('@pages/Products/Products'))
 const About = lazy(() => import('@pages/About'))
 const Contact = lazy(() => import('@pages/Contact'))
 const Categories = lazy(() => import('@pages/Categories/Categories'))
+const {
+  NewArrivalsPage,
+  BestSellersPage,
+  DealsPage,
+  GiftCardsPage,
+  TrackOrderPage,
+  ReturnsPage,
+  ShippingInfoPage,
+
+  PrivacyPage,
+  TermsPage,
+  CookiesPage,
+} = await import('@/pages/FooterSectionPages')
 
 const MainLayout = lazy(() => import('@layouts/MainLayout/MainLayout'))
 const CartPage = lazy(() => import('@pages/Cart/Cart'))
+const PaymentPage = lazy(() => import('@pages/Payment/Payment'))
+const OrdersPage = lazy(() => import('@pages/Orders/Orders'))
 const Wishlist = lazy(() => import('@pages/Wishlist/Wishlist'))
 const EditProfile = lazy(() => import('@pages/Profile/EditProfile'))
 
@@ -113,6 +128,26 @@ const router = createBrowserRouter([
           </PageSuspenseFallback>
         ),
       },
+      {
+        path: 'payment',
+        element: (
+          <PageSuspenseFallback>
+            <ProtectedRoute>
+              <PaymentPage />
+            </ProtectedRoute>
+          </PageSuspenseFallback>
+        ),
+      },
+      {
+        path: 'orders',
+        element: (
+          <PageSuspenseFallback>
+            <ProtectedRoute>
+              <OrdersPage />
+            </ProtectedRoute>
+          </PageSuspenseFallback>
+        ),
+      },
 
       {
         path: 'about-us',
@@ -137,6 +172,46 @@ const router = createBrowserRouter([
             <Categories />
           </PageSuspenseFallback>
         ),
+      },
+      {
+        path: 'new-arrivals',
+        element: <PageSuspenseFallback><NewArrivalsPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'best-sellers',
+        element: <PageSuspenseFallback><BestSellersPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'deals',
+        element: <PageSuspenseFallback><DealsPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'gift-cards',
+        element: <PageSuspenseFallback><GiftCardsPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'track-order',
+        element: <PageSuspenseFallback><TrackOrderPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'returns',
+        element: <PageSuspenseFallback><ReturnsPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'shipping-info',
+        element: <PageSuspenseFallback><ShippingInfoPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'privacy',
+        element: <PageSuspenseFallback><PrivacyPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'terms',
+        element: <PageSuspenseFallback><TermsPage /></PageSuspenseFallback>,
+      },
+      {
+        path: 'cookies',
+        element: <PageSuspenseFallback><CookiesPage /></PageSuspenseFallback>,
       },
     ],
   },

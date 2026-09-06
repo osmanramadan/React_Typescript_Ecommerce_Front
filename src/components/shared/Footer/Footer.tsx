@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import styles from './styles.module.css'
 
 const {
@@ -37,7 +38,7 @@ const Footer = () => {
           <Col xs={12} md={4} lg={3}>
             <h2 className={brand}>
               <span>eco</span>
-              <span className={brandMark}>ma</span>
+              <span className={brandMark}>mark</span>
             </h2>
             <p className={tagline}>Everyday essentials, sourced responsibly.</p>
             <div className={socialRow}>
@@ -81,16 +82,16 @@ const Footer = () => {
             <h3 className={heading}>Shop</h3>
             <ul className={linkList}>
               <li>
-                <a href="#">New arrivals</a>
+                <Link to="/new-arrivals">New arrivals</Link>
               </li>
               <li>
-                <a href="#">Best sellers</a>
+                <Link to="/best-sellers">Best sellers</Link>
               </li>
               <li>
-                <a href="#">Deals</a>
+                <Link to="/deals">Deals</Link>
               </li>
               <li>
-                <a href="#">Gift cards</a>
+                <Link to="/gift-cards">Gift cards</Link>
               </li>
             </ul>
           </Col>
@@ -99,16 +100,16 @@ const Footer = () => {
             <h3 className={heading}>Support</h3>
             <ul className={linkList}>
               <li>
-                <a href="#">Track order</a>
+                <Link to="/track-order">Track order</Link>
               </li>
               <li>
-                <a href="#">Returns</a>
+                <Link to="/returns">Returns</Link>
               </li>
               <li>
-                <a href="#">Shipping info</a>
+                <Link to="/shipping-info">Shipping info</Link>
               </li>
               <li>
-                <a href="#">Contact us</a>
+                <Link to="/contact">Contact us</Link>
               </li>
             </ul>
           </Col>
@@ -140,11 +141,11 @@ const Footer = () => {
         </Row>
 
         <div className={bottomBar}>
-          <span>© {new Date().getFullYear()} ecoma. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} ecomark. All rights reserved.</span>
           <div className={bottomLinks}>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Cookies</a>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/terms">Terms</Link>
+            <Link to="/cookies">Cookies</Link>
           </div>
         </div>
       </Container>

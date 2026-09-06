@@ -2,8 +2,10 @@ import type { ICategory, ICategoiesState } from './category'
 import type { IProduct, IProductsState } from './product'
 import type { IWishlistState } from './wishlist'
 import type { ICartState } from './cart'
+import type { IOrder, IOrderItem, IOrderState } from './order'
 import type { Tloading } from './shared'
-import type { IAuthState ,IAuthResponse} from './auth'
+import type { IAuthState, IAuthResponse } from './auth'
+
 export type {
   ICategory,
   IProduct,
@@ -11,6 +13,9 @@ export type {
   IProductsState,
   IWishlistState,
   ICartState,
+  IOrder,
+  IOrderItem,
+  IOrderState,
   IAuthState,
   IAuthResponse,
   Tloading,

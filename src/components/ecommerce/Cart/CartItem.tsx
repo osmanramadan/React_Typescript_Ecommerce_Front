@@ -30,8 +30,8 @@ const Star = ({ filled }: { filled: boolean }) => (
   <svg width="14" height="14" viewBox="0 0 24 24">
     <path
       d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6-5.9-3.4-5.9 3.4 1.3-6.6L2.5 9.4l6.6-.8z"
-      fill={filled ? '#2e7d32' : 'none'}
-      stroke={filled ? '#2e7d32' : '#c5c5c5'}
+      fill={filled ? '#0E53BA' : 'rgba(14, 83, 186, 0.18)'}
+      stroke={'#0E53BA'}
       strokeWidth="1.4"
     />
   </svg>

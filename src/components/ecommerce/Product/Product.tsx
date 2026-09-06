@@ -35,8 +35,8 @@ const Star = ({ filled }: { filled: boolean }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
     <path
       d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6-5.9-3.4-5.9 3.4 1.3-6.6L2.5 9.4l6.6-.8z"
-      fill={filled ? '#2e7d32' : 'none'}
-      stroke={filled ? '#2e7d32' : '#c5c5c5'}
+      fill={filled ? '#0E53BA' : 'rgba(14, 83, 186, 0.18)'}
+      stroke={'#0E53BA'}
       strokeWidth="1.4"
       strokeLinejoin="round"
     />
@@ -125,8 +125,8 @@ const ProductItem = memo(({ product }: ProductItemProps) => {
           <svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true">
             <path
               d="M12 21s-7.5-4.6-10-9.1C0.4 8.6 1.8 5 5.3 4.2 7.6 3.7 9.8 4.7 12 7.3c2.2-2.6 4.4-3.6 6.7-3.1 3.5.8 4.9 4.4 3.3 7.7C19.5 16.4 12 21 12 21Z"
-              fill={liked ? '#dc3545' : 'none'}
-              stroke={liked ? '#dc3545' : '#fff'}
+              fill={liked ? '#DC3545' : 'none'}
+              stroke={liked ? '#DC3545' : '#fff'}
               strokeWidth="1.6"
             />
           </svg>

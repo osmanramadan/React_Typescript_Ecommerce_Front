@@ -63,7 +63,7 @@ export default function About() {
                   fontSize: '0.9rem',
                 }}
               >
-                ma
+                mark
               </span>
             </div>
 
@@ -71,7 +71,7 @@ export default function About() {
               We make everyday shopping simpler.
             </h1>
             <p className="text-muted" style={{ fontSize: '1.05rem', maxWidth: '620px', marginBottom: 22 }}>
-              Eco-ma was built for people who want smart, trusted, and convenient shopping without the stress.
+              Eco-mark was built for people who want smart, trusted, and convenient shopping without the stress.
               We bring together practical essentials, thoughtful service, and a smooth digital experience.
             </p>
             <Button href="/products" size="lg" style={{ backgroundColor: brandBlue, borderColor: brandBlue }}>
@@ -90,7 +90,7 @@ export default function About() {
             >
               <img
                 src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1000&q=80"
-                alt="About Eco-ma"
+                alt="About Eco-mark"
                 style={{ width: '100%', height: '300px', objectFit: 'cover', borderRadius: '18px' }}
               />
             </div>
@@ -155,7 +155,7 @@ export default function About() {
             >
               <h3 className="mb-3">Our story</h3>
               <p className="text-muted mb-3">
-                Eco-ma started with a simple idea: shopping online should feel personal, clear, and reliable.
+                Eco-mark started with a simple idea: shopping online should feel personal, clear, and reliable.
               </p>
               <p className="text-muted mb-3">
                 We wanted to create a store that makes it easy to find useful products, save favorites, and

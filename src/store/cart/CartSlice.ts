@@ -24,7 +24,10 @@ const cartSlice = createSlice({
     },
 
     ClearCart: (state) => {
+      state.items = {}
       state.productsFullData = []
+      state.loading = 'idle'
+      state.error = null
     },
 
     rmCartItem: (state, action) => {
