@@ -7,6 +7,7 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Profile from '@/pages/Profile/Profile'
 import ProtectedRoute from '@/components/ecommerce/Auth/ProtectedRoute'
+import AdminRoute from '@/components/ecommerce/Auth/AdminRoute'
 const Products = lazy(() => import('@pages/Products/Products'))
 const About = lazy(() => import('@pages/About'))
 const Contact = lazy(() => import('@pages/Contact'))
@@ -31,6 +32,7 @@ const PaymentPage = lazy(() => import('@pages/Payment/Payment'))
 const OrdersPage = lazy(() => import('@pages/Orders/Orders'))
 const Wishlist = lazy(() => import('@pages/Wishlist/Wishlist'))
 const EditProfile = lazy(() => import('@pages/Profile/EditProfile'))
+const AdminDashboard = lazy(() => import('@pages/Admin/AdminDashboard'))
 
 const router = createBrowserRouter([
   {
@@ -145,6 +147,16 @@ const router = createBrowserRouter([
             <ProtectedRoute>
               <OrdersPage />
             </ProtectedRoute>
+          </PageSuspenseFallback>
+        ),
+      },
+      {
+        path: 'admin',
+        element: (
+          <PageSuspenseFallback>
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
           </PageSuspenseFallback>
         ),
       },

@@ -55,6 +55,11 @@ const Header = () => {
                 </Nav>
               ) : (
                 <Nav>
+                  {user?.role === 'admin' && (
+                    <Nav.Link as={NavLink} to="/admin">
+                      Admin
+                    </Nav.Link>
+                  )}
                   <NavDropdown
                     title={`${user?.firstName || ''} اهلا`}
                     align="end"

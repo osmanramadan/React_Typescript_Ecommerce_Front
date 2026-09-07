@@ -32,6 +32,22 @@ const wishlistSlice = createSlice({
       state.itemsId = []
       state.productsFullData = []
       state.loading = 'idle'
+      state.error = null
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem('persist:wishlist')
+        try {
+          const rootPersist = window.localStorage.getItem('persist:root')
+          if (rootPersist) {
+            const parsed = JSON.parse(rootPersist)
+            if (parsed && typeof parsed === 'object' && 'wishlist' in parsed) {
+              delete parsed.wishlist
+              window.localStorage.setItem('persist:root', JSON.stringify(parsed))
+            }
+          }
+        } catch {
+          // ignore malformed persisted state
+        }
+      }
     },
 
   },

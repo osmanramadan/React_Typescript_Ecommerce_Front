@@ -5,7 +5,8 @@ export interface IAuthState {
     id:number;
     firstName:string;
     lastName:string;
-    email:string
+    email:string;
+    role?: 'user' | 'admin';
   } | null,
   accessToken:string | null;
   loading?:Tloading;
@@ -18,6 +19,7 @@ export interface IAuthResponse {
     email: string;
     firstName: string;
     lastName: string;
+    role?: 'user' | 'admin';
   };
   accessToken: string;
 };

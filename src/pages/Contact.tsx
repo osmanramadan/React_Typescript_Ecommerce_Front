@@ -2,7 +2,6 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export default function Contact() {
   const brandBlue = '#0E53BA'
-  const brandLight = '#EAF3FF'
 
   const infoCards = [
     { icon: '📍', title: 'Visit us', text: '123 Market Street, Dubai, UAE' },

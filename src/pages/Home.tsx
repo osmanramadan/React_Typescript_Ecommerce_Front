@@ -1,9 +1,53 @@
+import { useEffect, useState } from 'react'
 import { Button, Card, Col, Container, Row } from 'react-bootstrap'
+import axiosInstance from '@api/axios'
+import type { IProduct } from '@types'
+
+const normalizeProduct = (product: any): IProduct => ({
+  ...product,
+  price: Number(product.price ?? 0),
+  rating: Number(product.rating ?? 0),
+  reviewCount: Number(product.review_count ?? product.reviewCount ?? 0),
+  numInStock: Number(product.num_in_stock ?? product.numInStock ?? 0),
+  inStock: product.in_stock ?? product.inStock ?? true,
+})
 
 export default function Home() {
   const brandBlue = '#0E53BA'
   const brandLight = '#EAF3FF'
   const brandAccent = '#15B8A6'
+
+  const [featuredProducts, setFeaturedProducts] = useState<IProduct[]>([])
+  const [featuredLoading, setFeaturedLoading] = useState(true)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadFeaturedProducts = async () => {
+      try {
+        const response = await axiosInstance.get<any[]>('/products')
+
+        if (!isMounted) return
+
+        const products = response.data.slice(0, 3).map(normalizeProduct)
+        setFeaturedProducts(products)
+      } catch (error) {
+        if (isMounted) {
+          setFeaturedProducts([])
+        }
+      } finally {
+        if (isMounted) {
+          setFeaturedLoading(false)
+        }
+      }
+    }
+
+    loadFeaturedProducts()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   const features = [
     {
@@ -212,43 +256,72 @@ export default function Home() {
           </Button>
         </div>
 
-        <Row className="g-3">
-          {[
-            { name: 'Smart home starter', badge: 'Best seller', color: '#eaf3ff' },
-            { name: 'Daily care bundle', badge: 'New arrival', color: '#ecfeff' },
-            { name: 'Kitchen essentials', badge: 'Top rated', color: '#eefbf7' },
-          ].map((item) => (
-            <Col key={item.name} md={4} sm={6} xs={12}>
-              <Card className="h-100 border-0 shadow-sm overflow-hidden">
-                <div
-                  style={{
-                    height: '180px',
-                    background: item.color,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '3rem',
-                  }}
-                >
-                  {item.name.includes('home') ? '🏡' : item.name.includes('care') ? '🧴' : '🍴'}
-                </div>
-                <Card.Body>
-                  <span
-                    className="d-inline-block mb-2 px-2 py-1 rounded-pill"
-                    style={{ background: brandLight, color: brandBlue, fontSize: '0.75rem', fontWeight: 700 }}
+        {featuredLoading ? (
+          <Row className="g-3">
+            {[1, 2, 3].map((item) => (
+              <Col key={item} md={4} sm={6} xs={12}>
+                <Card className="h-100 border-0 shadow-sm overflow-hidden">
+                  <div
+                    style={{
+                      height: '180px',
+                      background: '#f3f6fb',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#8aa3c2',
+                      fontWeight: 700,
+                    }}
                   >
-                    {item.badge}
-                  </span>
-                  <Card.Title>{item.name}</Card.Title>
-                  <Card.Text className="text-muted mb-3">Curated for practical living and everyday comfort.</Card.Text>
-                  <Button href="/products" size="sm" style={{ backgroundColor: brandBlue, borderColor: brandBlue }}>
-                    Shop now
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+                    Loading...
+                  </div>
+                  <Card.Body>
+                    <div style={{ height: 14, background: '#edf3ff', borderRadius: 8, marginBottom: 12 }} />
+                    <div style={{ height: 14, width: '70%', background: '#edf3ff', borderRadius: 8, marginBottom: 12 }} />
+                    <div style={{ height: 12, width: '60%', background: '#edf3ff', borderRadius: 8 }} />
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        ) : featuredProducts.length > 0 ? (
+          <Row className="g-3">
+            {featuredProducts.map((product) => (
+              <Col key={product.id} md={4} sm={6} xs={12}>
+                <Card className="h-100 border-0 shadow-sm overflow-hidden">
+                  <div style={{ height: '180px', overflow: 'hidden' }}>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                  <Card.Body>
+                    {product.badge && (
+                      <span
+                        className="d-inline-block mb-2 px-2 py-1 rounded-pill"
+                        style={{ background: brandLight, color: brandBlue, fontSize: '0.75rem', fontWeight: 700 }}
+                      >
+                        {product.badge}
+                      </span>
+                    )}
+                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Text className="text-muted mb-3">
+                      {product.rating.toFixed(1)} ★ · {product.reviewCount} reviews
+                    </Card.Text>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <strong style={{ color: brandBlue, fontSize: '1.05rem' }}>${product.price.toFixed(2)}</strong>
+                      <Button href="/products" size="sm" style={{ backgroundColor: brandBlue, borderColor: brandBlue }}>
+                        Shop now
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <div className="text-muted">No featured products available right now.</div>
+        )}
       </section>
 
       <section style={{ marginTop: '56px', marginBottom: '40px' }}>
@@ -289,7 +362,7 @@ export default function Home() {
           <p className="mb-4 mx-auto text-white-50" style={{ maxWidth: '620px' }}>
             Discover essentials, save your favorites, and enjoy a better shopping experience every day.
           </p>
-          <Button href="/products" size="lg" style={{ backgroundColor: '#fff', borderColor: '#fff', color: brandBlue, fontWeight: 700 }}>
+          <Button href="/products" size="lg" style={{color:"white",backgroundColor: '#fff', borderColor: '#fff', fontWeight: 700 }}>
             Start shopping
           </Button>
         </div>

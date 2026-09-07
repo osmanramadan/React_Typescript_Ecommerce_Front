@@ -16,6 +16,20 @@ export interface PlaceOrderPayload {
   total: number
 }
 
+const normalizeOrder = (order: Partial<IOrder> & Record<string, unknown>): IOrder => ({
+  id: typeof order.id === 'number' ? order.id : undefined,
+  userId:
+    typeof order.userId === 'number'
+      ? order.userId
+      : typeof order.user_id === 'number'
+        ? order.user_id
+        : null,
+  items: Array.isArray(order.items) ? order.items : [],
+  total: Number(order.total ?? 0),
+  createdAt: (order.createdAt as string) ?? (order.created_at as string) ?? new Date().toISOString(),
+  status: (order.status as IOrder['status']) ?? 'pending',
+})
+
 const ActPlaceOrder = createAsyncThunk<IOrder, PlaceOrderPayload, { rejectValue: string }>(
   'orders/ActPlaceOrder',
   async (payload, thunkAPI) => {
@@ -33,8 +47,8 @@ const ActPlaceOrder = createAsyncThunk<IOrder, PlaceOrderPayload, { rejectValue:
     }
 
     try {
-      const res = await axiosInstance.post<IOrder>('/orders', newOrder, { signal })
-      return res.data
+      const res = await axiosInstance.post<unknown>('/orders', newOrder, { signal })
+      return normalizeOrder(res.data as Partial<IOrder>)
     } catch (error) {
       return rejectWithValue(getAxiosErrorMessage(error))
     }

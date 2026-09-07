@@ -1,6 +1,20 @@
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 
+try {
+  const rootPersist = localStorage.getItem('persist:root')
+  if (rootPersist) {
+    const parsedRoot = JSON.parse(rootPersist)
+    if (parsedRoot && typeof parsedRoot === 'object' && 'wishlist' in parsedRoot) {
+      delete parsedRoot.wishlist
+      localStorage.setItem('persist:root', JSON.stringify(parsedRoot))
+    }
+  }
+  localStorage.removeItem('persist:wishlist')
+} catch {
+  localStorage.removeItem('persist:wishlist')
+}
+
 // redux
 import { store, persistor } from './store'
 

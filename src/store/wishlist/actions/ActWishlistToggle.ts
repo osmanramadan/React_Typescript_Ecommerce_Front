@@ -17,32 +17,16 @@ const actLikeToggle = createAsyncThunk(
       const existing = await axiosInstance.get(`/wishlist?userId=${auth.user.id}&productId=${id}`)
 
       if (existing.data.length > 0) {
-
-        const record = existing.data[0]
-
-        if (record?.id !== undefined && record?.id !== null) {
-
-          await axiosInstance.delete(`/wishlist/${record.id}`)
-
-        } else {
-          
-          const allUserWishlist = await axiosInstance.get(`/wishlist?userId=${auth.user?.id}`)
-
-          const recordsToDelete = allUserWishlist.data.filter(
-            (item: { productId?: number; id?: number }) => item.productId === id
-          )
-
-          for (const item of recordsToDelete) {
-            if (item?.id !== undefined && item?.id !== null) {
-              await axiosInstance.delete(`/wishlist/${item.id}`)
-            }
+        for (const record of existing.data) {
+          if (record?.id !== undefined && record?.id !== null) {
+            await axiosInstance.delete(`/wishlist/${record.id}`)
           }
         }
 
         return { type: 'remove', id }
       }
 
-      await axiosInstance.post('/wishlist', { userId:auth.user?.id, productId: id })
+      await axiosInstance.post('/wishlist', { userId: auth.user?.id, productId: id })
 
       return { type: 'add', id }
 

@@ -25,6 +25,20 @@ const authSlice = createSlice({
     authLogout: (state) => {
       state.user = null,
       state.accessToken = null
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('persist:wishlist')
+      try {
+        const rootPersist = localStorage.getItem('persist:root')
+        if (rootPersist) {
+          const parsed = JSON.parse(rootPersist)
+          if (parsed && typeof parsed === 'object' && 'wishlist' in parsed) {
+            delete parsed.wishlist
+            localStorage.setItem('persist:root', JSON.stringify(parsed))
+          }
+        }
+      } catch {
+        // ignore malformed persisted state
+      }
     },
     authUpdate: (state, action) => {
       if (state.user && action.payload) {
@@ -44,6 +58,7 @@ const authSlice = createSlice({
         state.loading = 'succeeded'
         state.user = action.payload.user
         state.accessToken = action.payload.accessToken
+        localStorage.setItem('accessToken', action.payload.accessToken)
       })
       .addCase(ActAuthLogin.rejected, (state, action) => {
         state.loading = 'failed'

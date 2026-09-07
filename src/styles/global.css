@@ -1,3 +1,82 @@
+:root {
+  --brand-blue: #0e53ba;
+  --brand-blue-dark: #0b2f74;
+  --brand-teal: #15b8a6;
+  --brand-ice: #ebf5ff;
+  --brand-sand: #f7f5ef;
+  --text: #10213a;
+  --muted: #5c6b82;
+  --surface: #ffffff;
+  --surface-soft: #f4f8ff;
+  --border: rgba(14, 83, 186, 0.14);
+  --shadow-soft: 0 18px 40px rgba(14, 83, 186, 0.12);
+}
+
 html {
   scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(21, 184, 166, 0.12), transparent 25%),
+    linear-gradient(180deg, #f6f9ff 0%, #edf5ff 100%);
+  color: var(--text);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+  color: var(--brand-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--brand-blue-dark);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.card,
+.navbar,
+.form-control,
+.btn {
+  border-radius: 16px !important;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand-blue) 0%, #1d74ff 100%);
+  border: none;
+  box-shadow: 0 12px 24px rgba(14, 83, 186, 0.18);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: linear-gradient(135deg, #0c49a7 0%, #145ed8 100%);
+  border: none;
+}
+
+.btn-outline-primary {
+  border-color: var(--brand-blue);
+  color: var(--brand-blue);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background: var(--brand-blue);
+  border-color: var(--brand-blue);
+  color: #fff;
 }

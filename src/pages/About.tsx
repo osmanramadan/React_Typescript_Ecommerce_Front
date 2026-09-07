@@ -3,7 +3,6 @@ import { Button, Card, Col, Container, Row } from 'react-bootstrap'
 export default function About() {
   const brandBlue = '#0E53BA'
   const brandLight = '#EAF3FF'
-  const brandAccent = '#15B8A6'
 
   const values = [
     {
