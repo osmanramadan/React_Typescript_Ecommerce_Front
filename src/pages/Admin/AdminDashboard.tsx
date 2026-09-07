@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Alert, Button, Card, Col, Container, Form, Row, Table } from 'react-bootstrap'
 import axiosInstance from '@api/axios'
-import type { IOrder, IProduct } from '@types'
+import type { ICategory, IOrder, IProduct } from '@types'
 
 const emptyProductForm = {
   name: '',
@@ -24,23 +24,35 @@ const normalizeProduct = (product: any): IProduct => ({
   numInStock: Number(product.num_in_stock ?? product.numInStock ?? 0),
 })
 
+const emptyCategoryForm = {
+  slug: '',
+  name: '',
+  description: '',
+  image: '',
+}
+
 const AdminDashboard = () => {
   const [orders, setOrders] = useState<IOrder[]>([])
   const [products, setProducts] = useState<IProduct[]>([])
+  const [categories, setCategories] = useState<ICategory[]>([])
   const [error, setError] = useState('')
   const [productForm, setProductForm] = useState(emptyProductForm)
+  const [categoryForm, setCategoryForm] = useState(emptyCategoryForm)
   const [editingProductId, setEditingProductId] = useState<number | null>(null)
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null)
   const [saving, setSaving] = useState(false)
 
   const loadAdminData = async () => {
     try {
-      const [ordersRes, productsRes] = await Promise.all([
+      const [ordersRes, productsRes, categoriesRes] = await Promise.all([
         axiosInstance.get('/admin/orders'),
         axiosInstance.get('/admin/products'),
+        axiosInstance.get('/admin/categories'),
       ])
 
       setOrders(ordersRes.data)
       setProducts(productsRes.data.map(normalizeProduct))
+      setCategories(categoriesRes.data)
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Unable to load admin data')
     }
@@ -124,6 +136,57 @@ const AdminDashboard = () => {
       setProducts((current) => current.filter((product) => product.id !== productId))
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Failed to delete product')
+    }
+  }
+
+  const handleCategorySubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    setSaving(true)
+    setError('')
+
+    try {
+      const payload = {
+        slug: categoryForm.slug,
+        name: categoryForm.name,
+        description: categoryForm.description,
+        image: categoryForm.image,
+      }
+
+      if (editingCategoryId) {
+        const response = await axiosInstance.patch(`/admin/categories/${editingCategoryId}`, payload)
+        setCategories((current) =>
+          current.map((category) => (category.id === editingCategoryId ? response.data : category)),
+        )
+      } else {
+        const response = await axiosInstance.post('/admin/categories', payload)
+        setCategories((current) => [response.data, ...current])
+      }
+
+      setCategoryForm(emptyCategoryForm)
+      setEditingCategoryId(null)
+    } catch (err: any) {
+      setError(err?.response?.data?.message || 'Failed to save category')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleEditCategory = (category: ICategory) => {
+    setEditingCategoryId(category.id)
+    setCategoryForm({
+      slug: category.slug,
+      name: category.name,
+      description: category.description || '',
+      image: category.image || '',
+    })
+  }
+
+  const handleDeleteCategory = async (categoryId: number) => {
+    try {
+      await axiosInstance.delete(`/admin/categories/${categoryId}`)
+      setCategories((current) => current.filter((category) => category.id !== categoryId))
+    } catch (err: any) {
+      setError(err?.response?.data?.message || 'Failed to delete category')
     }
   }
 
@@ -326,6 +389,102 @@ const AdminDashboard = () => {
           </Card>
         </Col>
       </Row>
+
+      <Card className="mt-4">
+        <Card.Header>Categories</Card.Header>
+        <Card.Body>
+          <Row className="g-4">
+            <Col lg={5}>
+              <Form onSubmit={handleCategorySubmit}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Slug</Form.Label>
+                  <Form.Control
+                    value={categoryForm.slug}
+                    onChange={(e) => setCategoryForm((current) => ({ ...current, slug: e.target.value }))}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    value={categoryForm.name}
+                    onChange={(e) => setCategoryForm((current) => ({ ...current, name: e.target.value }))}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    value={categoryForm.description}
+                    onChange={(e) => setCategoryForm((current) => ({ ...current, description: e.target.value }))}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Image</Form.Label>
+                  <Form.Control
+                    value={categoryForm.image}
+                    onChange={(e) => setCategoryForm((current) => ({ ...current, image: e.target.value }))}
+                  />
+                </Form.Group>
+
+                <div className="d-flex gap-2">
+                  <Button type="submit" disabled={saving}>
+                    {saving ? 'Saving...' : editingCategoryId ? 'Update Category' : 'Add Category'}
+                  </Button>
+                  {editingCategoryId && (
+                    <Button
+                      variant="outline-secondary"
+                      onClick={() => {
+                        setEditingCategoryId(null)
+                        setCategoryForm(emptyCategoryForm)
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  )}
+                </div>
+              </Form>
+            </Col>
+
+            <Col lg={7}>
+              <Table striped bordered hover responsive>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Slug</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {categories.map((category) => (
+                    <tr key={category.id}>
+                      <td>{category.id}</td>
+                      <td>{category.slug}</td>
+                      <td>{category.name}</td>
+                      <td>
+                        <div className="d-flex gap-2">
+                          <Button size="sm" variant="outline-primary" onClick={() => handleEditCategory(category)}>
+                            Edit
+                          </Button>
+                          <Button size="sm" variant="outline-danger" onClick={() => handleDeleteCategory(category.id)}>
+                            Delete
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
 
       <Card className="mt-4">
         <Card.Header>Products</Card.Header>
