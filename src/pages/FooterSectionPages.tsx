@@ -26,7 +26,7 @@ function FooterSectionPage({
     <Container className="py-5">
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
         <div>
-          <p className="text-primary fw-semibold mb-2">eco mark</p>
+          <p className="text-primary fw-semibold mb-2">eco market</p>
           <h1 className="mb-0">{title}</h1>
         </div>
 

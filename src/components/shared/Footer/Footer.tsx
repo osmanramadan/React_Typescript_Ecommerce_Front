@@ -38,7 +38,7 @@ const Footer = () => {
           <Col xs={12} md={4} lg={3}>
             <h2 className={brand}>
               <span>eco</span>
-              <span className={brandMark}>mark</span>
+              <span className={brandMark}>market</span>
             </h2>
             <p className={tagline}>Everyday essentials, sourced responsibly.</p>
             <div className={socialRow}>

@@ -116,7 +116,7 @@ export default function Home() {
                   boxShadow: '0 10px 20px rgba(13, 110, 253, 0.28)',
                 }}
               >
-                mark
+                market
               </span>
             </div>
 
@@ -196,7 +196,7 @@ export default function Home() {
           <Col md={6}>
             <h3 className="mb-3">Your everyday store, made simpler</h3>
             <p className="text-muted mb-3">
-              Eco-mark brings together trusted products, smooth browsing, and a cleaner shopping flow so
+              Eco-market brings together trusted products, smooth browsing, and a cleaner shopping flow so
               you can discover what matters without the stress.
             </p>
             <p className="text-muted mb-0">
