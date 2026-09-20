@@ -1,73 +1,88 @@
-# React + TypeScript + Vite
+# E-commerce Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript storefront for a modern ecommerce application. This frontend handles browsing products, managing categories, cart and wishlist flows, checkout, user authentication, user profile management, and admin-only screens.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19
+- TypeScript
+- Vite
+- React Router
+- Redux Toolkit
+- Redux Persist
+- Bootstrap 5
+- Axios
+- ESLint + Prettier
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Product catalog and product detail browsing
+- Category-based filtering and shopping experience
+- Cart and wishlist management
+- User login and registration
+- Protected account and checkout routes
+- Order history and profile editing
+- Admin-only dashboard access
+- Responsive layout for desktop and mobile screens
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js 18+
+- npm
+- A running backend API
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Setup
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Install dependencies:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Create the environment file:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+3. Set the backend API URL in `.env`:
+
+```bash
+VITE_API_URL=http://localhost:5005/api
+```
+
+4. Start the app:
+
+```bash
+npm run dev
+```
+
+The frontend is usually available at:
+
+```bash
+http://localhost:5173
+```
+
+## Available Scripts
+
+```bash
+npm run dev               # start Vite dev server
+npm run build             # production build
+npm run preview           # preview production build
+npm run lint              # run ESLint
+npm run format            # format source files with Prettier
+npm run format:check      # check formatting
+```
+
+## Environment Configuration
+
+This project reads its API endpoint from `VITE_API_URL`. If it is not provided, it defaults to:
+
+```bash
+http://localhost:5005/api
+```
+
+## Notes
+
+This frontend expects the ecommerce backend to be running and reachable. Make sure the backend service is available before testing features such as login, signup, cart checkout, orders, and profile management.
+
